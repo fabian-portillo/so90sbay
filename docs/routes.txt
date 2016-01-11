@@ -1,0 +1,3 @@
+GET / -> get all products
+GET /:id -> get product by id
+GET /:id/reviews -> get all products
