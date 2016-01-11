@@ -75,19 +75,19 @@ describe('Order model', function () {
 
       });
 
-      it('should have a fromProduct static method', function( done ) {
+      xit('should have a fromProduct static method', function( done ) {
 
-        mongoose.model('Product').create({ title: "My Product", price: 19.99, quantity: 100, category: ["Test"] })
-        .then( function( product ) {
+        var product = {
+          _id : new mongoose.Types.ObjectId( "12345678901234567890abcd" ),
+          price : 19.99
+        }
 
-          mongoose.model('Order').LineItem.fromProduct( 3, product )
-          .then( function( li ) {
+        mongoose.model('Order').LineItem.fromProduct( 3, product )
+        .then( function( li ) {
 
-            expect( li.quantity ).to.be.equal( 3 );
-            expect( li.price ).to.be.equal( 19.99 );
-            expect( li.product ).to.be.equal( product._id );
-
-          });
+          expect( li.quantity ).to.be.equal( 3 );
+          expect( li.price ).to.be.equal( 19.99 );
+          expect( li.product ).to.be.equal( product._id );
 
         });
 
