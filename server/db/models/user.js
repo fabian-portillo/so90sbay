@@ -13,6 +13,9 @@ var schema = new mongoose.Schema({
     salt: {
         type: String
     },
+    cart: {
+        type: Schema.Types.ObjectId, ref: "Order"
+    },
     twitter: {
         id: String,
         username: String,
