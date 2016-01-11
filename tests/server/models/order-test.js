@@ -32,6 +32,8 @@ describe('Order model', function () {
         mongoose.model('User').create({ email: "test@test.com", password: "12345678" })
         .then( function( user ) {
 
+          console.log( 'user created');
+
           var orderInfo = {
             user: user
           }
@@ -39,8 +41,10 @@ describe('Order model', function () {
           mongoose.model('Order').create( orderInfo )
           .then( function( order ) {
 
+            console.log( 'order created')
+
             expect( order ).to.have.property( 'user' );
-            expect( order.user ).to.be.equal( user._id );
+            expect( order.user ).to.be.equal( user );
 
             done();
 
@@ -61,7 +65,7 @@ describe('Order model', function () {
 
       it('should have the right properties and methods', function() {
 
-        var li = new LineItem( 3, 19.99, null );
+        var li = new LineItem( { quantity: 3, price: 19.99, product: null } );
         expect( li.quantity ).to.be.equal( 3 );
         expect( li.price ).to.be.equal( 19.99 );
         expect( li.product ).to.be.equal( null );
@@ -94,18 +98,20 @@ describe('Order model', function () {
     it('has a fromLineItems static method', function( done ) {
 
       var LineItem = mongoose.model('Order').LineItem;
-      var li1 = new LineItem(1, 10, null);
-      var li2 = new LineItem(3, 20, null)
-      var lis = [li1, li2];
+      var li1 = new LineItem({ quantity: 1, price: 10, product: null });
+      var li2 = new LineItem({ quantity: 3, price: 20, product: null });
 
-      mongoose.model('Order').fromLineItems( lis, null )
+      mongoose.model('Order').fromLineItems( [li1, li2], null )
       .then( function( order ) {
 
-        expect( order.lineItems[0] ).to.be.similar( li1 );
-        expect( order.lineItems[1] ).to.be.similar( li2 );
+        expect( order ).to.have.property( 'lineItems' );
+        expect( order.lineItems.length ).to.be.equal( 2 );
         expect( order.user ).to.be.equal( null );
 
-      });
+        done();
+
+      })
+      .then( null, done );
 
     });
 
