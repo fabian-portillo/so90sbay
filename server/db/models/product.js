@@ -46,8 +46,4 @@ schema.pre('save', function(next) {
 });
 
 
-schema.method('correctPassword', function(candidatePassword) {
-    return encryptPassword(candidatePassword, this.salt) === this.password;
-});
-
 mongoose.model('Product', schema);
