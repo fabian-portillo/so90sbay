@@ -39,7 +39,6 @@ describe('successful creation', function() {
 
     it('should have the right info', function(done) {
         createProduct().then(function(product) {
-            // var sanitizedProduct = product.sanitize();
             expect(product.title).to.equal('n64');
             expect(product.description).to.equal('The sweetest 90s video game console');
             expect(product.price).to.equal(200);

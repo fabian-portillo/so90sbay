@@ -37,8 +37,9 @@ var schema = new mongoose.Schema({
 });
 
 schema.pre('save', function(next) {
+    var defaultPhoto = "https://media.giphy.com/media/WW00AYYAyb2YE/giphy.gif"
     if (this.photo.length === 0) {
-        this.photo.push("https://media.giphy.com/media/WW00AYYAyb2YE/giphy.gif")
+        this.photo.push(defaultPhoto)
     }
     next();
 

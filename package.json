@@ -1,7 +1,9 @@
 {
   "name": "FullstackGeneratedApp",
   "version": "1.0.0",
-  "description": "A generated project at Fullstack Academy",
+  "name": "So90sBay",
+  "version": "1.0.0",
+  "description": "An e-commerce web-app running on the MEAN stack",
   "main": "server/start.js",
   "scripts": {
     "start": "nodemon --watch server -e js,html server/start.js",
