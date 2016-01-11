@@ -13,13 +13,15 @@ LineItemSchema.methods.getExtendedPrice = function() {
   return this.quantity * this.price;
 }
 
-LineItemSchema.statics.fromProduct = function( quantity, product ) {
+LineItemSchema.statics.fromProduct = function( quantity, productId ) {
 
-  if ( product.constructor === mongoose.model('Product') ) {
-    return new LineItem({ quantity: quantity, price: product.price, product: product });
-  } else if ( product.constructor === mongoose.Schema.Types.ObjectId ) {
+  var LineItem = new mongoose.model('Order').LineItem;
 
-    return mongoose.model('Product').findById( product ).exec()
+  if ( productId.constructor === mongoose.model('Product') ) {
+    return new LineItem({ quantity: quantity, price: productId.price, product: productId });
+  } else if ( productId.constructor === mongoose.Schema.Types.ObjectId ) {
+
+    return mongoose.model('Product').findById( productId ).exec()
     .then( function( product ) {
       if ( product === null ) return console.error( "Could not find a product with the given product id" );
 
@@ -30,7 +32,7 @@ LineItemSchema.statics.fromProduct = function( quantity, product ) {
     })
 
   } else {
-    console.error( "Tried to create a LineItem from unknown product type:", product.constructor.name );
+    console.error( "Tried to create a LineItem from unknown product type:", productId.constructor.name );
   }
 
 }
