@@ -14,7 +14,7 @@ var schema = new mongoose.Schema({
         type: String
     },
     cart: {
-        type: Schema.Types.ObjectId, ref: "Order"
+        type: mongoose.Schema.Types.ObjectId, ref: "Order"
     },
     twitter: {
         id: String,
