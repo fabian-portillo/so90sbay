@@ -1,0 +1,28 @@
+//Products
+GET / -> get all products
+GET /:id -> get product by id
+GET /:id/reviews -> get product's reviews
+GET /:category -> get products by category
+POST / -> create new product
+PUT /:id -> update product
+DELETE /:id -> delete product
+
+//Users
+GET / -> get all users
+GET /:id -> get user by id
+GET /:id/reviews -> get user's reviews
+GET /:id/previous-orders -> get user's previous orders
+POST / -> create new user
+PUT /:id -> update user
+DELETE /:id -> delete user
+
+//Reviews
+GET / -> get all reviews
+GET /:id -> get review by id
+POST / -> create new review
+PUT /:id -> update review
+DELETE /:id -> delete review
+
+
+
+
