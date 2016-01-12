@@ -16,18 +16,21 @@ LineItemSchema.methods.getExtendedPrice = function() {
 LineItemSchema.statics.fromProduct = function( quantity, productId ) {
 
   var LineItem = mongoose.model('Order').LineItem;
-  var liInfo = { quantity: quantity, price: productId.price, product: productId._id };
 
   if ( productId.constructor === mongoose.model('Product') || productId.constructor === Object ) {
+
+    var liInfo = { quantity: quantity, price: productId.price, product: productId };
     return LineItem.create( liInfo );
+
   } else if ( productId.constructor === mongoose.Schema.Types.ObjectId ) {
 
     return mongoose.model('Product').findById( productId ).exec()
     .then( function( product ) {
       if ( product === null ) return console.error( "Could not find a product with the given product id" );
 
-      // return new LineItem({ quantity: quantity, price: product.price, product: product });
+      var liInfo = { quantity: quantity, price: product.price, product: product._id };
       return LineItem.create( liInfo );
+
     })
     .then( null, function( err ) {
       console.error( "Tried to create a LineItem from a product but got an error:", err );
