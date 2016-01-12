@@ -15,10 +15,12 @@ LineItemSchema.methods.getExtendedPrice = function() {
 
 LineItemSchema.statics.fromProduct = function( quantity, productId ) {
 
-  var LineItem = new mongoose.model('Order').LineItem;
+  var LineItem = mongoose.model('Order').LineItem;
 
-  if ( productId.constructor === mongoose.model('Product') ) {
-    return new LineItem({ quantity: quantity, price: productId.price, product: productId });
+  if ( productId.constructor === mongoose.model('Product') || productId.constructor === Object ) {
+    return new Promise( function( res, rej ) {
+      res( LineItem({ quantity: quantity, price: productId.price, product: productId }) );
+    });
   } else if ( productId.constructor === mongoose.Schema.Types.ObjectId ) {
 
     return mongoose.model('Product').findById( productId ).exec()

@@ -75,7 +75,7 @@ describe('Order model', function () {
 
       });
 
-      xit('should have a fromProduct static method', function( done ) {
+      it('should have a fromProduct static method', function( done ) {
 
         var product = {
           _id : new mongoose.Types.ObjectId( "12345678901234567890abcd" ),
@@ -88,6 +88,8 @@ describe('Order model', function () {
           expect( li.quantity ).to.be.equal( 3 );
           expect( li.price ).to.be.equal( 19.99 );
           expect( li.product ).to.be.equal( product._id );
+
+          done();
 
         });
 
