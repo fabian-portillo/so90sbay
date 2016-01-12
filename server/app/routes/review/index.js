@@ -12,9 +12,6 @@ router.get('/', function (req, res, next) {
     .then(function (reviews) {
       res.status(200).json(reviews);
     })
-    .then(null, function (err) {
-      console.error("You got an error", err);
-    })
     .then(null, next);
 });
 
@@ -41,8 +38,10 @@ router.put('/:id', function (req, res, next) {
       for (var k in req.body) {
         review[k] = req.body[k];
       }
-      review.save();
-      res.status(200).json(review);
+      review.save()
+        .then(function (review) {
+          res.status(200).json(review);
+        })
     })
     .then(null, next);
 });
