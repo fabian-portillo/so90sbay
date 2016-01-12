@@ -175,15 +175,25 @@ describe('Cart Route', function () {
 
           agent.put('/api/cart').send(putsData)
             .expect( 200 )
-            .expect( function( res ) {
+            .end( function( err, res ) {
+              if ( err ) return err;
 
-              var cart = JSON.parse( res.text );
-              if ( cart.lineItems[0].quantity !== 1 )
-                return "Line item has the wrong quantity of items ("
-                  + "expected:1, got:" + cart.lineItems[0].quantity + ")";
+              agent.get('/api/cart')
+                .expect( 200 )
+                .expect( function( res ) {
 
-            })
-            .end(done)
+                  var cart = JSON.parse( res.text );
+                  if ( cart.lineItems.length === 0 )
+                    return "Cart came back empty";
+
+                  if ( cart.lineItems[0].quantity !== 1 )
+                    return "Line item has the wrong quantity of items ("
+                      + "expected:1, got:" + cart.lineItems[0].quantity + ")";
+
+                })
+                .end(done)
+
+            });
 
         });
 
@@ -210,7 +220,7 @@ describe('Cart Route', function () {
             .expect( function( res ) {
 
               var cart = JSON.parse( res.text );
-              if ( cart.lineItems[0].length )
+              if ( cart.lineItems.length )
                 return "Expected cart to be empty but it wasn't";
 
             })

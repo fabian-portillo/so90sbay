@@ -84,7 +84,11 @@ router.post( '/', function( req, res, next ) {
 
   // validate the request body
   if ( req.body.productId === undefined || req.body.quantity === undefined ) {
-    return next( new Error( "Malformed POST request when adding to cart: required keys 'productId' and 'quantity' were missing." ) );
+    
+    var badPostError = new Error( "Malformed POST request when adding to cart: required keys 'productId' and 'quantity' were missing." );
+    badPostError.status = 400;
+    return next( badPostError );
+
   }
 
   // find the product specified by productId
@@ -94,9 +98,9 @@ router.post( '/', function( req, res, next ) {
     // check that the product exists
     if ( product === null ) {
 
-      var err = new Error( "Product not found" );
-      err.status = 404;
-      next( err );
+      var badProductError = new Error( "Product not found" );
+      badProductError.status = 400;
+      next( badProductError );
 
     }
 
@@ -110,7 +114,7 @@ router.post( '/', function( req, res, next ) {
       // update our cart with the new line items
       Order.findByIdAndUpdate( req.session.cart._id, {
         $set: { lineItems: lis }
-      })
+      }).populate( 'lineItems' )
       .then( function( cart ) {
      
         cart.lineItems = lis;
@@ -124,5 +128,95 @@ router.post( '/', function( req, res, next ) {
   .then( null, next );
 
 });
+
+// PUT / - updates a line item's quantity
+router.put( '/', function( req, res, next ) {
+
+  // validate PUT body
+  if ( req.body.productId === undefined || req.body.quantity === undefined ) {
+
+    var badPutError = new Error( "Malformed PUT request when modifying cart: required keys 'productId' and 'quantity' were missing" );
+    badPutError.status = 400;
+    return next( badPutError );
+  
+  }
+
+  // find the line item with the associated product id
+  var lineToChange = req.session.cart.lineItems.reduce( function( match, li ) {
+    if ( li.product.toString() === req.body.productId ) return li;
+    else return match;
+  }, null )
+
+  if ( lineToChange !== null ) {
+
+    lineToChange.quantity = req.body.quantity;
+    lineToChange.save()
+    .then( function() {
+
+      // reload the cart
+      Order.findById( req.session.cart._id ).exec()
+      .then( function( cart ) {
+
+        req.session.cart = cart;
+        res.status( 200 ).json( cart );
+
+      })
+
+    })
+
+  } else {
+
+    // the product was not found, throw an error
+    var emsg = "Product not found in line items (" + req.body.productId + " was not found in " + req.session.cart.lineItems + ")";
+    var productNotFoundError = new Error( emsg );
+    productNotFoundError.status = 400;
+    next( productNotFoundError );
+  
+  }
+
+});
+
+router.delete( '/', function( req, res, next ) {
+
+  // validate DELETE body
+  if ( req.body.productId === undefined ) {
+
+    var badDeleteError = new Error( "Malformed DELETE request when modifying cart: required key 'productId' was missing" );
+    badDeleteError.status = 400;
+    return next( badDeleteError );
+
+  }
+
+  // find the line to delete
+  var lineToDeleteIdx = req.session.cart.lineItems.reduce( function( match, li, idx ) {
+    if ( li.product.toString() === req.body.productId ) return idx;
+    else return match;
+  }, null )
+
+  if ( lineToDeleteIdx !== null ) {
+
+    req.session.cart.lineItems.splice( lineToDeleteIdx, 1 );
+    
+    Order.findByIdAndUpdate( req.session.cart._id, {
+      $set: { lineItems: req.session.cart.lineItems }
+    }).populate( 'lineItems' )
+    .then( function( cart ) {
+
+      res.status( 200 ).json( cart );
+
+    })
+
+  } else {
+
+    // line not found, throwing error
+    var emsg = "Product not found in line items (" + req.body.productId + " was not found in " + req.session.cart.lineItems + ")";
+    var lineNotFoundError = new Error( emsg );
+    lineNotFoundError.status = 400;
+    next( lineNotFoundError );
+
+  }
+
+
+})
 
 module.exports = router;
