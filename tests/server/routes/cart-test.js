@@ -206,16 +206,12 @@ describe('Cart Route', function () {
         quantity: 3
       };
 
-      var deleteData = {
-        productId: product._id
-      }
-
       agent.post('/api/cart').send(postData)
         .expect( 200 )
         .end( function( err, res ) {
           if ( err ) return err;
 
-          agent.delete('/api/cart').send(deleteData)
+          agent.delete('/api/cart/' + product._id.toString()).send()
             .expect( 200 )
             .expect( function( res ) {
 

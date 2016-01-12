@@ -176,10 +176,10 @@ router.put( '/', function( req, res, next ) {
 
 });
 
-router.delete( '/', function( req, res, next ) {
+router.delete( '/:productId', function( req, res, next ) {
 
   // validate DELETE body
-  if ( req.body.productId === undefined ) {
+  if ( req.params.productId === undefined ) {
 
     var badDeleteError = new Error( "Malformed DELETE request when modifying cart: required key 'productId' was missing" );
     badDeleteError.status = 400;
@@ -189,7 +189,7 @@ router.delete( '/', function( req, res, next ) {
 
   // find the line to delete
   var lineToDeleteIdx = req.session.cart.lineItems.reduce( function( match, li, idx ) {
-    if ( li.product.toString() === req.body.productId ) return idx;
+    if ( ( li.product._id ? li.product._id : li.product.toString() ) === req.params.productId ) return idx;
     else return match;
   }, null )
 
@@ -209,7 +209,7 @@ router.delete( '/', function( req, res, next ) {
   } else {
 
     // line not found, throwing error
-    var emsg = "Product not found in line items (" + req.body.productId + " was not found in " + req.session.cart.lineItems + ")";
+    var emsg = "Product not found in line items (" + req.params.productId + " was not found in " + req.session.cart.lineItems + ")";
     var lineNotFoundError = new Error( emsg );
     lineNotFoundError.status = 400;
     next( lineNotFoundError );
