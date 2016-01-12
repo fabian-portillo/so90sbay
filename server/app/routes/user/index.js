@@ -9,7 +9,7 @@ var Review = mongoose.model( 'Review' );
 
 router.get('/', (req,res,next) => {
 	User.find({}).exec()
-	.then(function(users){
+	.then((users) => {
  		res.status(200).json(users);
  	})
  	.then(null, next)
@@ -18,7 +18,7 @@ router.get('/', (req,res,next) => {
 router.get('/:id', (req,res,next) => {
 	var userId = req.params.id;
 	User.findOne({_id: userId})
-	.then(function(user){
+	.then((user) => {
  		res.status(200).json(user);
  	})
  	.then(null, next)
@@ -28,7 +28,7 @@ router.get('/:id', (req,res,next) => {
 router.get('/:id/reviews', (req,res,next) => {
 	var userId = req.params.id;
 	Review.find({user: userId}).exec()
-	.then((reviews)=> {
+	.then((reviews) => {
 		res.status(200).json(reviews);
 	})
  	.then(null, next)
@@ -39,7 +39,7 @@ router.get('/:id/reviews', (req,res,next) => {
 router.post('/', (req,res,next) => {
 	var newUser = req.body.user;
 	User.create(newUser)
-	.then(function(user){
+	.then((user) => {
  		res.status(201).json(user);
  	})
  	.then(null, next)
@@ -49,13 +49,13 @@ router.put('/:id', (req,res,next) => {
 	var update = req.body.update;
 	var userId = req.params.id;
 	User.findOne(userId)
-	.then((user)=>{
+	.then((user) => {
 		return User.update(update)
 	})
-	.then(()=>{
+	.then(() => {
 		return User.findOne(userId)
 	})
-	.then((user)=>{
+	.then((user) => {
 		res.status(200).json(user);
 	})
  	.then(null, next)
@@ -64,8 +64,8 @@ router.put('/:id', (req,res,next) => {
 router.delete('/:id', (req,res,next) => {
 	var userId = req.params.id;
 	User.findOne({_id: userId}).remove().exec()
-	.then((user)=>{
-		res.status(204).json(user);
+	.then((user) => {
+		res.status(204).end();
 	})
  	.then(null, next)
 })
