@@ -1,7 +1,6 @@
 //TODO: GET previous orders
 var router = require('express').Router();
 module.exports = router;
-var _ = require('lodash');
 var mongoose = require('mongoose');
 
 var User = mongoose.model( 'User' );
