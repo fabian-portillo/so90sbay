@@ -50,7 +50,7 @@ router.put('/:id', (req,res,next) => {
 	var userId = req.params.id;
 	User.findOne(userId)
 	.then((user) => {
-		return User.update(update)
+		return user.update(update)
 	})
 	.then(() => {
 		return User.findOne(userId)
