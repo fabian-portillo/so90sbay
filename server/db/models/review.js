@@ -1,24 +1,24 @@
 'use strict';
 var mongoose = require('mongoose');
 
-var schema = new mongoose.Schema({
-    title: {
-        type: String
-    },
-    body: {
-        type: String,
-        validate: {
-          validator: function(v) {
-            return /^[a-zA-Z]{,150}$/.test(v);
-          },
-          message: 'You have exceeded the maximum number of characters!'
+    var schema = new mongoose.Schema({
+        title: {
+            type: String
         },
-        required: true
-    },
-    rating: {
-        type: Number
-    }
-});
+        body: {
+            type: String,
+            required: true
+        },
+        rating: {
+            type: Number
+        },
+        user: {
+            type: mongoose.Schema.Types.ObjectId, ref: "User"
+        },
+        product: {
+            type: mongoose.Schema.Types.ObjectId, ref: "Product"
+        }
+    });
 
 
 mongoose.model('Review', schema);
