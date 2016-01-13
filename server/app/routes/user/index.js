@@ -46,16 +46,14 @@ router.post('/', (req,res,next) => {
 })
 
 router.put('/:id', (req,res,next) => {
-	var update = req.body.update;
+	var update = req.body;
 	var userId = req.params.id;
-	User.findOne(userId)
+	User.findByIdAndUpdate(userId, update)
 	.then((user) => {
-		return user.update(update)
-	})
-	.then(() => {
-		return User.findOne(userId)
+		return User.findOne(user._id)
 	})
 	.then((user) => {
+		console.log(user);
 		res.status(200).json(user);
 	})
  	.then(null, next)

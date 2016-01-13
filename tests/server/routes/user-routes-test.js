@@ -31,7 +31,8 @@ describe('User Route', function () {
 
 		var userOne = {
 			email: 'joe@gmail.com',
-			password: 'shoopdawoop'
+			password: 'shoopdawoop',
+			isAdmin: true
 		};
 
 		var userTwo = {
@@ -101,9 +102,9 @@ describe('User Route', function () {
 		it('should update a user', function (done) {
 			userAgent
 			.put('/api/user/' + createdUser._id)
-			.send({update: {
+			.send({
 					email: 'updatedemail@gmail.com'
-				}})
+				})
 			.expect(200)
 			.end(function (err, response) {
 				if (err) return done(err);
