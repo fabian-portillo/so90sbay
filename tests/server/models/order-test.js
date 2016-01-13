@@ -38,7 +38,7 @@ describe('Order model', function () {
             user: user
           }
 
-          mongoose.model('Order').create( orderInfo )
+          Order.create( orderInfo )
           .then( function( order ) {
 
             console.log( 'order created')
@@ -57,60 +57,67 @@ describe('Order model', function () {
 
     describe('line items', function () {
 
-      var LineItem = mongoose.model('Order').LineItem;
+      var LineItem = Order.LineItem;
 
       it('should exist', function() {
         expect( LineItem ).to.be.a( 'function' );
       });
 
-      it('should have the right properties and methods', function() {
+      it('getExtendedPrice gets the price times quantity', function() {
 
         var li = new LineItem( { quantity: 3, price: 19.99, product: null } );
-        expect( li.quantity ).to.be.equal( 3 );
-        expect( li.price ).to.be.equal( 19.99 );
-        expect( li.product ).to.be.equal( null );
-
-        // test instance methods
         expect( li.getExtendedPrice() ).to.be.equal( 19.99 * 3 );
 
-      });
+      })
 
-      it('should have a fromProduct static method', function( done ) {
+      it('fromProduct method should create a new line item from a product document', function( done ) {
 
         var product = {
           _id : new mongoose.Types.ObjectId( "12345678901234567890abcd" ),
           price : 19.99
         }
 
-        mongoose.model('Order').LineItem.fromProduct( 3, product )
+        LineItem.fromProduct( 3, product )
         .then( function( li ) {
 
-          expect( li.quantity ).to.be.equal( 3 );
-          expect( li.price ).to.be.equal( 19.99 );
-          expect( li.product ).to.be.equal( product._id );
+          LineItem.findById( li._id ).exec()
+          .then( function( retrievedLi ) {
 
-          done();
+            expect( retrievedLi.quantity ).to.be.equal( 3 );
+            expect( retrievedLi.price ).to.be.equal( 19.99 );
+            expect( retrievedLi.product.toString() ).to.be.equal( product._id.toString() );
 
-        });
+            done();
+
+          })
+          .then( null, done );
+
+        })
+        .then( null, done );
 
       });
 
     });
 
-    it('has a fromLineItems static method', function( done ) {
+    it('fromLineItems method should create a new order with the given line items', function( done ) {
 
-      var LineItem = mongoose.model('Order').LineItem;
+      var LineItem = Order.LineItem;
       var li1 = new LineItem({ quantity: 1, price: 10, product: null });
       var li2 = new LineItem({ quantity: 3, price: 20, product: null });
 
-      mongoose.model('Order').fromLineItems( [li1, li2], null )
-      .then( function( order ) {
+      Order.fromLineItems( [li1, li2], null )
+      .then( function( createdOrder ) {
 
-        expect( order ).to.have.property( 'lineItems' );
-        expect( order.lineItems.length ).to.be.equal( 2 );
-        expect( order.user ).to.be.equal( null );
+        Order.findById( createdOrder._id ).exec()
+        .then( function( order ) {
 
-        done();
+          expect( order ).to.have.property( 'lineItems' );
+          expect( order.lineItems.length ).to.be.equal( 2 );
+          expect( order.user ).to.be.equal( null );
+
+          done();
+
+        });
 
       })
       .then( null, done );
