@@ -1,4 +1,13 @@
 <section id="home">
+<!-- CAROUSEL -->
+	<carousel interval="3000" no-wrap="noWrapSlides">
+		<slide ng-repeat="slide in slides" active="slide.active" index="slide.id">
+			<div class="carousel-caption">
+         	 	<p>{{slide.text}}</p>
+    		</div>
+			<img ng-src="{{slide.image}}">
+	    </slide>
+	 </carousel>
 	<h3>Recommended Products:</h3>
 	<div class="recommended-products" ng-repeat="product in products">
 	    <a ui-sref="productDetails({productId: product._id})"><product-thumbnail product="product"></product-thumbnail></a>
