@@ -19,8 +19,7 @@ LineItemSchema.statics.fromProduct = function( quantity, productId ) {
 
   if ( productId.constructor === mongoose.model('Product') || productId.constructor === Object ) {
 
-    var liInfo = { quantity: quantity, price: productId.price, product: productId };
-    return LineItem.create( liInfo );
+    return LineItem.create({ quantity: quantity, price: productId.price, product: productId });
 
   } else if ( productId.constructor === mongoose.Schema.Types.ObjectId ) {
 
@@ -28,8 +27,7 @@ LineItemSchema.statics.fromProduct = function( quantity, productId ) {
     .then( function( product ) {
       if ( product === null ) return console.error( "Could not find a product with the given product id" );
 
-      var liInfo = { quantity: quantity, price: product.price, product: product._id };
-      return LineItem.create( liInfo );
+      return LineItem.create({ quantity: quantity, price: product.price, product: product._id });
 
     })
     .then( null, function( err ) {

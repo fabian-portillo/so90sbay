@@ -161,13 +161,35 @@ describe('Products Route', function () {
 			photo: 'https://upload.wikimedia.org/wikipedia/commons/f/f4/Game-Boy-FL.jpg'
 		};
 
-		it('should create a new product with a post request', function (done){
+		var adminCreds = {
+				email: "joe@fullstack.com",
+				password: "password",
+				isAdmin: true
+			}
+
+		beforeEach('create admin account', function (done) {
+			User.create(adminCreds)
+				.then( function() { done() }, done );
+		})
+
+		it('should create a new product with a post request when the user is an admin', function (done){
+			productAgent.post('/login').send(adminCreds)
+				.end( function( err, res ) {
+					if (err) return done(err);
+
+					productAgent.post('/api/product').send(sample)
+					.expect(201).end(function(err, response){
+						if (err) return done(err);
+						expect(response.body.title).to.equal('GameBoy');
+						done();
+					});
+
+				});
+		})
+
+		it('should not allow unauthorized users to create products', function (done) {
 			productAgent.post('/api/product').send(sample)
-			.expect(201).end(function(err, response){
-				if (err) return done(err);
-				expect(response.body.title).to.equal('GameBoy');
-				done();
-			})
+				.expect(401, done);
 		})
 	})
 
@@ -197,14 +219,35 @@ describe('Products Route', function () {
 			.then(null, done)
 		})
 
-		it('should update a user', function (done) {
-			productAgent.put('/api/product/' + sampleId)
-			.send(update).expect(200).end(function(err, response) {
-				if (err) return done(err);
-				expect(response.body.title).to.equal('GameBoy Color')
-				expect(response.body.price).to.equal(80);
-				done();
-			})
+		var adminCreds = {
+				email: "joe@fullstack.com",
+				password: "password",
+				isAdmin: true
+			}
+
+		beforeEach('create admin account', function (done) {
+			User.create(adminCreds)
+				.then( function() { done() }, done );
+		})
+
+		it('should allow admins to update a product', function (done) {
+			productAgent.post('/login').send(adminCreds)
+				.end( function( err, res ) {
+
+					productAgent.put('/api/product/' + sampleId)
+					.send(update).expect(200).end(function(err, response) {
+						if (err) return done(err);
+						expect(response.body.title).to.equal('GameBoy Color')
+						expect(response.body.price).to.equal(80);
+						done();
+					});
+
+				});
+		})
+
+		it('should not allow unauthorized users to update products', function (done) {
+			productAgent.put('/api/product/' + sampleId).send(update)
+				.expect(401, done);
 		})
 	})
 
@@ -230,20 +273,42 @@ describe('Products Route', function () {
 			.then(null, done)
 		})
 
-		it('should remove a user from the database', function(done) {
-			productAgent.delete('/api/product/' + sampleId).expect(204)
-			.end(function (err, response){
-				if (err) return done(err);
-				Product.findById(sampleId, function (err, product) {
-					if (err) return done(err);
-					expect(product).to.be.null;
-					done();
-				})
-			})
+		var adminCreds = {
+				email: "joe@fullstack.com",
+				password: "password",
+				isAdmin: true
+			}
 
+		beforeEach('create admin account', function (done) {
+			User.create(adminCreds)
+				.then( function() { done() }, done );
 		})
 
-	})
+		it('should allow admins to remove a product from the database', function(done) {
+			productAgent.post('/login').send(adminCreds)
+				.end( function( err, res ) {
+					if ( err ) return done(err);
+
+					productAgent.delete('/api/product/' + sampleId).expect(204)
+					.end(function (err, response){
+						if (err) return done(err);
+						Product.findById(sampleId, function (err, product) {
+							if (err) return done(err);
+							expect(product).to.be.null;
+							done();
+						})
+					});
+
+				});
+
+		});
+
+		it('should not allow unauthorized users to delete products', function (done) {
+			productAgent.delete('/api/product/' + sampleId)
+				.expect(401, done);
+		});
+
+	});
 
 });
 

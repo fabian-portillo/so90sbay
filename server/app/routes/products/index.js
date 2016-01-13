@@ -1,11 +1,17 @@
 var router = require('express').Router();
 module.exports = router;
-var _ = require('lodash');
 var mongoose = require('mongoose');
 
 var Product = mongoose.model('Product');
 var Review = mongoose.model('Review');
 
+var adminOnly = function( req, res, next ) {
+	if ( req.user && req.user.isAdmin ) {
+		next();
+	} else {
+		res.status(401).end();
+	}
+}
 
 router.get('/', (req,res,next) => {
 	Product.find({})
@@ -13,7 +19,7 @@ router.get('/', (req,res,next) => {
 	.then(function(products){
 		res.status(200).json(products);
 	})
-	.then(null, next)
+	.then(null, next);
 })
 
 router.get('/:id', (req, res, next) => {
@@ -24,7 +30,7 @@ router.get('/:id', (req, res, next) => {
 	.then(function(product){
 		res.status(200).json(product);
 	})
-	.then(null, next)
+	.then(null, next);
 })
 
 // temporarily commented out bc Review model not yet hooked up to Products
@@ -35,6 +41,7 @@ router.get('/:id/reviews', (req, res, next) => {
 	.then((reviews) => {
 		res.status(200).json(reviews);
 	})
+	.then(null, next);
 })
 
 router.get('/category/:category', (req, res, next) => {
@@ -44,21 +51,21 @@ router.get('/category/:category', (req, res, next) => {
 	.then((products) => {
 		res.status(200).json(products);
 	})
-	.then(null, next)
+	.then(null, next);
 })
 
 //make sure req.body.product is correct when testing...
-router.post('/', (req, res, next) => {
+router.post('/', adminOnly, (req, res, next) => {
 	Product.create(req.body)
 	.then((product) => {
 		res.status(201).json(product);
 	})
-	.then(null, next)
+	.then(null, next);
 })
 
 
 //double check this one; not so comfortable with Put requests
-router.put('/:id', (req, res, next) => {
+router.put('/:id', adminOnly, (req, res, next) => {
 	var id = req.params.id;
 	var update = req.body;
 	Product.findOne(id)
@@ -71,16 +78,17 @@ router.put('/:id', (req, res, next) => {
 	.then((product) => {
 		res.status(200).json(product);
 	})
-	.then(null, next)
+	.then(null, next);
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', adminOnly, (req, res, next) => {
 	Product.findOne({_id: req.params.id})
 	.remove()
 	.exec()
 	.then((product) => {
 		res.status(204).json(product)
 	})
+	.then(null, next);
 })
 
 
