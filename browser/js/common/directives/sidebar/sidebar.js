@@ -1,4 +1,4 @@
-app.directive('sidebar', function () {
+app.directive('sidebar', function (SidebarFactory) {
   return {
     restrict: 'E',
     scope: {},
@@ -14,7 +14,7 @@ app.directive('sidebar', function () {
         { label: 'music', state: 'products.music' }
       ];
 
-
+      scope.sidebarState = SidebarFactory.getSidebarState;
     }
   };
 });
