@@ -1,0 +1,10 @@
+<article class="review">
+  <div class="review-rating">{{ review.rating }}</div>
+  <h3 class="review-title">
+    {{ review.title }}
+    <small class="review-byline">posted by {{ review.user.email }}</small>
+  </h3>
+  <div class="review-body">
+    <p ng-repeat="paragraph in review.body.split('\n\n')">{{ paragraph }}</p>
+  </div>
+</article>
