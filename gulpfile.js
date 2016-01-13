@@ -58,7 +58,7 @@ gulp.task('testServerJS', function () {
 	}).pipe(mocha({ reporter: 'spec' }));
 });
 
-gulp.task('testServerJSWithCoverage', function (done) {
+gulp.task('testServerJSWithCoverage', ['lintJS'], function (done) {
     gulp.src('./server/**/*.js')
         .pipe(istanbul({
             includeUntested: true
@@ -75,7 +75,7 @@ gulp.task('testServerJSWithCoverage', function (done) {
         });
 });
 
-gulp.task('testBrowserJS', function (done) {
+gulp.task('testBrowserJS', ['buildJS'], function (done) {
     karma.start({
         configFile: __dirname + '/tests/browser/karma.conf.js',
         singleRun: true
@@ -94,6 +94,7 @@ gulp.task('buildCSS', function () {
         .pipe(sassCompilation)
         .pipe(rename('style.css'))
         .pipe(gulp.dest('./public'));
+
 });
 
 // Production tasks
@@ -128,6 +129,12 @@ gulp.task('build', function () {
         runSeq(['buildJS', 'buildCSS']);
     }
 });
+
+gulp.task('end', ['testBrowserJS','testServerJSWithCoverage'], function() {
+  process.exit(0);
+});
+
+gulp.task('travis', ['lintJS','buildJS','buildCSS','testBrowserJS','testServerJSWithCoverage','end']);
 
 gulp.task('default', function () {
 

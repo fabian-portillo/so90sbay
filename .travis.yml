@@ -3,6 +3,9 @@ node_js:
  - "stable"
 services:
  - mongodb
+install:
+ - npm install
 before_script:
  - npm install -g gulp
-script: gulp
+script: 
+ - gulp travis
