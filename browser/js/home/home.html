@@ -1,6 +1,6 @@
 <section id="home">
 	<h3>Recommended Products:</h3>
 	<div class="recommended-products" ng-repeat="product in products">
-	    <a ui-sref=""><product-thumbnail product="product"></product-thumbnail></a>
+	    <a ui-sref="productDetails({productId: product._id})"><product-thumbnail product="product"></product-thumbnail></a>
     </div>
 </section>

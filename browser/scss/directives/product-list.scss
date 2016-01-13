@@ -3,10 +3,25 @@ product-list {
 		max-width: 35%;
 		margin-bottom: 5px
 	}
+
 	#catalog {
 		margin: auto 10%
 	}
+
 	.items {
 		margin: 0 auto 5%
+	}
+
+	.price {
+		font-weight: bold
+	}
+
+	a {
+		font-weight: bold
+	}
+
+	p {
+		margin: 1px 0;
+		font-size: 1.6vw
 	}
 }
