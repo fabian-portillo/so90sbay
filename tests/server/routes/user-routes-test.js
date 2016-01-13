@@ -31,7 +31,8 @@ describe('User Route', function () {
 
 		var userOne = {
 			email: 'joe@gmail.com',
-			password: 'shoopdawoop'
+			password: 'shoopdawoop',
+			isAdmin: true
 		};
 
 		var userTwo = {
@@ -44,12 +45,12 @@ describe('User Route', function () {
 			password: 'lionking'
 		};
 
-		var createdUser;
+		var createdUsers;
 
 		beforeEach('Create users', function (done) {
 			User.create([userOne, userTwo, userThree])
 			.then((users)=>{
-				createdUser = users[0];
+				createdUsers = users;
 				done();
 			})
 			.then(null, done)
@@ -88,7 +89,7 @@ describe('User Route', function () {
 
 		it('should get user by ID', function (done) {
 			userAgent
-			.get('/api/user/' + createdUser._id)
+			.get('/api/user/' + createdUsers[0]._id)
 			.expect(200)
 			.end(function (err, response) {
 				if (err) return done(err);
@@ -98,33 +99,124 @@ describe('User Route', function () {
 			});
 		});
 
-		it('should update a user', function (done) {
-			userAgent
-			.put('/api/user/' + createdUser._id)
-			.send({update: {
+		it('should allow users to update themselves', function (done) {
+			userAgent.post('/login').send({
+				email: userTwo.email,
+				password: userTwo.password
+			})
+				.end( function( err, res ) {
+
+					userAgent
+					.put('/api/user/' + createdUsers[1]._id)
+					.send({
+							email: 'updatedemail@gmail.com'
+						})
+					.expect(200)
+					.end(function (err, response) {
+						if (err) return done(err);
+						expect(response.body).to.be.an('object');
+						expect(response.body.email).to.equal("updatedemail@gmail.com");
+						done();
+					});
+				
+				});
+		});
+
+		it('should allow admins to update other users', function (done) {
+			userAgent.post('/login').send({
+				email: userOne.email,
+				password: userOne.password
+			})
+				.end( function( err, res ) {
+					if ( err ) return done( err );
+
+					userAgent
+					.put('/api/user/' + createdUsers[2]._id)
+					.send({
+						email: 'updatedemail@gmail.com'
+					})
+					.expect(200)
+					.end( function ( err, res ) {
+						if (err) return done(err);
+						expect(res.body).to.be.an('object');
+						expect(res.body.email).to.equal("updatedemail@gmail.com");
+						done();
+					});
+
+				});
+		});
+
+		it('should not allow unauthorized users to update other users', function (done) {
+			userAgent.put('/api/user/' + createdUsers[0]._id)
+				.send({
 					email: 'updatedemail@gmail.com'
-				}})
-			.expect(200)
-			.end(function (err, response) {
+				})
+				.expect(401)
+				.end( function( err, res ) {
+
+					userAgent.post('/login').send({
+						email: userTwo.email,
+						password: userTwo.password
+					})
+						.end( function( err, res ) {
+
+							userAgent.put('/api/user/' + createdUsers[0]._id)
+								.send({
+									email: 'updatedemail@gmail.com'
+								})
+								.expect(401, done);
+
+						});
+
+				});
+		});
+
+		it('should allow users to delete themselves', function (done) {
+			userAgent.post('/login').send({
+				email: userTwo.email,
+				password: userTwo.password
+			}).end( function ( err, res ) {
 				if (err) return done(err);
-				expect(response.body).to.be.an('object');
-				expect(response.body.email).to.equal("updatedemail@gmail.com");
-				done();
+
+				userAgent
+				.delete('/api/user/' + createdUsers[1]._id)
+				.expect(204)
+				.end(function (err, res) {
+					if (err) return done(err);
+					User.findById(createdUsers[1]._id, function (err, user) {
+						if (err) return done(err);
+						expect(user).to.be.null;
+						done();
+					});
+				});
+
 			});
 		});
 
-		it('should delete a user', function (done) {
-			userAgent
-			.delete('/api/user/' + createdUser._id)
-			.expect(204)
-			.end(function (err, res) {
+		it('should allow admins to delete other users', function (done) {
+			userAgent.post('/login').send({
+				email: userOne.email,
+				password: userOne.password
+			}).end( function( err, res ) {
 				if (err) return done(err);
-				User.findById(createdUser._id, function (err, user) {
-					if (err) return done(err);
-					expect(user).to.be.null;
-					done();
-				});
+
+				userAgent.delete( '/api/user/' + createdUsers[1]._id )
+					.expect( 204 )
+					.end( function( err, res ) {
+						if (err) return done(err);
+						User.findById(createdUsers[1]._id, function ( err, user ) {
+							if (err) return done(err);
+							expect(user).to.be.null;
+							done();
+						});
+					});
+
 			});
+		});
+
+		it('should not allow users to delete each other', function (done) {
+			userAgent.delete( '/api/user/' + createdUsers[1]._id )
+				.expect( 401, done );
 		});
 
 	});
