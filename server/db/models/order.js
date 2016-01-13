@@ -76,9 +76,6 @@ OrderSchema.statics.fromLineItems = function( lis, user ) {
     lineItems : lis,
     paymentInfo : null
   })
-  .then( function( order ) {
-    return order;
-  })
   .then( null, function( err ) {
     console.error( "Tried to create an order from line items but got an error:", err );
   })
