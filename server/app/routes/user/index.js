@@ -7,6 +7,29 @@ var mongoose = require('mongoose');
 var User = mongoose.model( 'User' );
 var Review = mongoose.model( 'Review' );
 
+router.param('id', function ( req, res, next, id ) {
+
+	User.findById( id )
+		.then( function( user ) {
+			req.foundUser = user;
+			next();
+		})
+		.then( null, next )
+
+})
+
+var adminOrSelfOnly = function( req, res, next ) {
+
+	if ( req.user && req.user.isAdmin ) {
+		next();
+	} else if ( req.user && req.user._id.toString() === req.foundUser._id.toString() ) {
+		next();
+	} else {
+		res.status( 401 ).end();
+	}
+
+}
+
 router.get('/', (req,res,next) => {
 	User.find({}).exec()
 	.then((users) => {
@@ -16,25 +39,16 @@ router.get('/', (req,res,next) => {
 })
 
 router.get('/:id', (req,res,next) => {
-	var userId = req.params.id;
-	User.findOne({_id: userId})
-	.then((user) => {
- 		res.status(200).json(user);
- 	})
- 	.then(null, next)
+	res.status(200).json( req.foundUser );
 })
 
-
 router.get('/:id/reviews', (req,res,next) => {
-	var userId = req.params.id;
-	Review.find({user: userId}).exec()
+	Review.find({user: req.foundUser._id}).exec()
 	.then((reviews) => {
 		res.status(200).json(reviews);
 	})
  	.then(null, next)
 })
-
-
 
 router.post('/', (req,res,next) => {
 	var newUser = req.body.user;
@@ -45,15 +59,12 @@ router.post('/', (req,res,next) => {
  	.then(null, next)
 })
 
-router.put('/:id', (req,res,next) => {
-	var update = req.body.update;
+router.put('/:id', adminOrSelfOnly, (req,res,next) => {
+	var update = req.body;
 	var userId = req.params.id;
-	User.findOne(userId)
+	User.findByIdAndUpdate(userId, update)
 	.then((user) => {
-		return user.update(update)
-	})
-	.then(() => {
-		return User.findOne(userId)
+		return User.findOne(user._id)
 	})
 	.then((user) => {
 		res.status(200).json(user);
@@ -61,7 +72,7 @@ router.put('/:id', (req,res,next) => {
  	.then(null, next)
 })
 
-router.delete('/:id', (req,res,next) => {
+router.delete('/:id', adminOrSelfOnly, (req,res,next) => {
 	var userId = req.params.id;
 	User.findOne({_id: userId}).remove().exec()
 	.then((user) => {

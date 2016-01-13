@@ -16,6 +16,10 @@ var schema = new mongoose.Schema({
     cart: {
         type: mongoose.Schema.Types.ObjectId, ref: "Order"
     },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
     twitter: {
         id: String,
         username: String,
@@ -31,7 +35,7 @@ var schema = new mongoose.Schema({
 });
 
 // method to remove sensitive information from user objects before sending them out
-schema.methods.sanitize =  function () {
+schema.methods.sanitize = function () {
     return _.omit(this.toJSON(), ['password', 'salt']);
 };
 
