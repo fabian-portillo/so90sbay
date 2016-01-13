@@ -1,6 +1,6 @@
 app.config(function($stateProvider){
 	$stateProvider.state('productList', {
-		url: '/product-category',
+		url: '/product-list',
 		templateUrl: '/js/list/product-list.html',
 		controller: function ($scope, ProductFactory, theProducts) {
 			$scope.products = theProducts;
