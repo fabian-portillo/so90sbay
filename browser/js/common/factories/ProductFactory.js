@@ -41,10 +41,32 @@ app.factory('ProductFactory', function ($http) {
         })
     }
 
-    factory.createNewProduct = () => {
+    factory.createNewProduct = (newProduct) => {
         return $http({
             method: 'POST',
-            url: '/api/product/'
+            url: '/api/product/',
+            data: newProduct
+        })
+        .then((response)=> {
+            return response.data;
+        })
+    }
+
+    factory.updateProduct = (id, update) => {
+        return $http({
+            method: 'PUT',
+            url: '/api/product/' + id,
+            data: update
+        })
+        .then((response)=> {
+            return response.data;
+        })
+    }
+
+     factory.deleteProduct = (id) => {
+        return $http({
+            method: 'DELETE',
+            url: '/api/product/' + id
         })
         .then((response)=> {
             return response.data;

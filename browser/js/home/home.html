@@ -1,4 +1,6 @@
 <section id="home">
-    <fullstack-logo></fullstack-logo>
-    <rando-greeting></rando-greeting>
+	<h3>Recommended Products:</h3>
+	<div class="recommended-products" ng-repeat="product in products">
+	    <a ui-sref=""><product-thumbnail product="product"></product-thumbnail></a>
+    </div>
 </section>
