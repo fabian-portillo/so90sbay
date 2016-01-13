@@ -1,0 +1,30 @@
+<div class="container">
+  <div id="product-images">
+    <img class="main-image" ng-src="{{ mainImage }}">
+
+    <a href="#" ng-repeat="photo in product.photo" ng-click="changeMainImage( photo )">
+      <img class="thumb-image" ng-src="{{ photo }}">
+    </a>
+  </div>
+
+  <div id="product-purchasebox">
+    <p>
+      <small>{{ product.quantity }} available for </small>
+      <strong>${{ product.price }}</strong>
+    </p>
+
+    <button class="btn btn-primary">Add to Cart</button>
+  </div>
+
+  <div id="product-details">
+    <h2>{{ product.title }}</h2>
+    <small>Categories: <a ng-repeat="category in product.category" href="#">{{ category }}</a></small>
+    <p ng-repeat="paragraph in product.description.split('\n')">{{ paragraph }}</p>
+  </div>
+
+  <hr class="clearfix">
+
+  <div class="review-list">
+    <review ng-repeat="review in product.reviews" review="review"></review>
+  </div>
+</div>
