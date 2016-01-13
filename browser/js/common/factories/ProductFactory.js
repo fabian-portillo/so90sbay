@@ -2,7 +2,6 @@ app.factory('ProductFactory', function ($http) {
     var factory = {};
 
     factory.getAllProducts = () => {
-        console.log("Hello from products facotry")
         return $http({
             method: 'GET',
             url: '/api/product'
