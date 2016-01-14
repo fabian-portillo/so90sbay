@@ -55,7 +55,7 @@ gulp.task('testServerJS', function () {
     require('babel/register');
 	return gulp.src('./tests/server/**/*.js', {
 		read: false
-	}).pipe(mocha({ reporter: 'progress', bail: true }));
+	}).pipe(mocha({ reporter: 'spec', bail: true }));
 });
 
 gulp.task('testServerJSWithCoverage', ['lintJS'], function (done) {
@@ -66,7 +66,7 @@ gulp.task('testServerJSWithCoverage', ['lintJS'], function (done) {
         .pipe(istanbul.hookRequire())
         .on('finish', function () {
             gulp.src('./tests/server/**/*.js', {read: false})
-                .pipe(mocha({reporter: 'progress'}))
+                .pipe(mocha({reporter: 'spec'}))
                 .pipe(istanbul.writeReports({
                     dir: './coverage/server/',
                     reporters: ['html', 'text']
