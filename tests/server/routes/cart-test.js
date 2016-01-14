@@ -122,6 +122,73 @@ describe('Cart Route', function () {
 
     });
 
+    describe('user attachment', function() {
+
+      var userCreds = {
+          email: "joe@gmail.com",
+          password: "fullstack"
+        }
+      var createdUser;
+      beforeEach('create the user', function() {
+        return User.create( userCreds )
+          .then( function( user ) {
+            createdUser = user;
+          });
+      })
+
+      it('attaches the cart to the logged in user', function( done ) {
+
+        agent.post('/login').send( userCreds )
+          .end( function( err, res ) {
+            if ( err ) return done(err);
+
+            agent.get('/api/cart')
+              .expect( 200 )
+              .end( function( err, res ) {
+                if ( err ) return done(err);
+
+                var cart = res.body;
+                expect( cart.user.toString() ).to.equal( createdUser._id.toString() );
+
+                done();
+
+              })
+          })
+      });
+
+      it('attaches carts to users that log in after creating their cart', function( done ) {
+
+        // check that the cart isn't attached to anyone
+        agent.get('/api/cart')
+          .expect( 200 )
+          .end( function( err, res ) {
+            if ( err ) return done(err);
+
+            var cart = res.body;
+            expect( cart.user ).to.be.undefined;
+
+            // now we log into our user
+            agent.post('/login').send( userCreds )
+              .end( function( err, res ) {
+                if ( err ) return done(err);
+
+                // refresh the cart
+                agent.get('/api/cart')
+                  .end( function( err, res ) {
+                    if ( err ) return done(err);
+
+                    cart = res.body;
+                    expect( cart.user ).to.not.be.undefined;
+                    expect( cart.user.toString() ).to.equal( createdUser._id.toString() );
+
+                    done();
+                  
+                  })
+              })
+          })
+      });
+    });
+
     it('can add items to a cart and retrieve the cart with those items saved', function( done ) {
 
       var postData = {
@@ -154,6 +221,37 @@ describe('Cart Route', function () {
 
         });
 
+    });
+
+    it('only inserts one line item per product', function(done) {
+
+      var postData = {
+        productId: product._id,
+        quantity: 3
+      }
+
+      agent.post('/api/cart').send(postData)
+        .expect( 200 )
+        .end( function( err, res ) {
+          if ( err ) return err;
+
+          agent.post('/api/cart').send(postData)
+            .expect( 200 )
+            .end( function( err, res ) {
+              if ( err ) return err;
+
+              agent.get('/api/cart')
+                .end( function( err, res ) {
+                  if ( err ) return err;
+                
+                  var cart = res.body;
+                  expect( cart.lineItems.length ).to.equal( 1, "Cart has multiple line items in it" );
+                  expect( cart.lineItems[0].quantity ).to.equal( 6, "Adding a line item with an existing product should sum the line items" );
+
+                  done(); 
+                });
+            });
+        });
     });
 
     it('can update items on a cart and retrieve the cart with those items updated', function( done ) {
