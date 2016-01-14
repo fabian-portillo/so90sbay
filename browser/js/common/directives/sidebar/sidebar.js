@@ -3,17 +3,26 @@ app.directive('sidebar', function (SidebarFactory) {
     restrict: 'E',
     scope: {},
     templateUrl: '/js/common/directives/sidebar/sidebar.html',
-    link: function (scope) {
+    link: function (scope, element, attrs) {
 
       scope.categories = [
-        { label: 'toys', state: 'products.toys' },
-        { label: 'posters', state: 'products.posters' },
-        { label: 'video games', state: 'products.video-games' },
-        { label: 'stuffed animals', state: 'products.stuffed-animals' },
-        { label: 'clothing', state: 'products.clothing' },
-        { label: 'music', state: 'products.music' }
+        { label: 'Toys', state: 'toys' },
+        { label: 'Posters', state: 'posters' },
+        { label: 'Video Games', state: 'video games' },
+        { label: 'Stuffed Animals', state: 'stuffed animals' },
+        { label: 'Clothing', state: 'clothing' },
+        { label: 'Music', state: 'music' }
       ];
 
+      scope.sidebarState = SidebarFactory.getSidebarState;
+      
+    }
+  };
+})
+.directive('sidebarMover', function (SidebarFactory) {
+  return {
+    restrict: 'A',
+    link: function (scope) {
       scope.sidebarState = SidebarFactory.getSidebarState;
     }
   };

@@ -1,20 +1,36 @@
 #sidebar {
   height: 100%;
   width: 250px;
-  list-style-type: none;
   position: absolute;
-  background-color: red;
+  z-index: 200;
+  border: 2px solid black;
+  h2 {
+    margin-left: 10px;
+  }
+  ul {
+    padding: 0;
+    li {
+      list-style-type: none;
+      margin: 20px 10px;
+      :hover {
+        color: red;
+      };
+      a {
+        text-decoration: none;
+        color: inherit;
+      };
+      span {
+        float: right;
+      }
+    };
+  }
 }
 
 .move-right {
-  transform: translate3d(250px, 0px, 0px);
+  padding-left: 250px;
 }
 
 .page-content-wrapper {
   width: 100%;
   position: absolute;
 }
-
-
-
-/*transform: translate3d(0px, 0px, 0px);*/

@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 module.exports = router;
 require('../../../db/models');
 var Review = mongoose.model('Review');
+var _ = require('lodash');
 
 
 router.get('/', function (req, res, next) {
@@ -33,13 +34,11 @@ router.post('/', function (req, res, next) {
 });
 
 router.put('/:id', function (req, res, next) {
-  Review.findOne({_id: req.params.id})
+  Review.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then(function (review) {
-      for (var k in req.body) {
-        review[k] = req.body[k];
-      }
       review.save()
         .then(function (review) {
+          console.log("after save", review)
           res.status(200).json(review);
         })
     })
