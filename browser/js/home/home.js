@@ -4,7 +4,7 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/home/home.html',
         controller: function ($scope, ProductFactory, allProducts) {
         	$scope.products = allProducts;
-            $scope.slides = [{text: 'test', image: 'http://cdn.buzznet.com/assets/users16/pattygopez/default/justin-timberlake-britney-spears--large-msg-131118867529.jpg', state:'productList'}, {text: 'test2', image: 'http://toysfromthe90s.com/wp-content/uploads/2015/03/pogs.jpg', state:'productList'}];
+            $scope.slides = [{image: 'http://i.imgur.com/vSt2W4A.png', state:'categoryList ({ category: "toys" })'}, {image: 'http://i.imgur.com/xrw9b3t.png', state:'categoryList ({ category: "video games" })'}];
         },
         resolve: {
         	allProducts: function(ProductFactory){

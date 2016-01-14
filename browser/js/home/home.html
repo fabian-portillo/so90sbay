@@ -1,6 +1,6 @@
 <section id="home">
 <!-- CAROUSEL -->
-	<carousel interval="3000" no-wrap="noWrapSlides">
+	<carousel interval="5000" no-wrap="noWrapSlides">
 		<slide ui-sref="{{slide.state}}" ng-repeat="slide in slides" active="slide.active" index="slide.id">
 			<div class="carousel-caption">
          	 	<p>{{slide.text}}</p>
@@ -9,9 +9,10 @@
 	    </slide>
 	 </carousel>
 <!--  PAGER -->
-
+	<div class="recommended-products">
 	<h3>Recommended Products:</h3>
-	<div class="recommended-products row-fluid" ng-repeat="product in products">
+	<div class="row-fluid product-grid" ng-repeat="product in products">
 	    <a ui-sref="productDetails({productId: product._id})"><product-thumbnail product="product"></product-thumbnail></a>
+    </div>
     </div>
 </section>
