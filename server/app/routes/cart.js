@@ -1,5 +1,6 @@
 var mongoose = require( 'mongoose' );
 var router = require( 'express' ).Router();
+var _ = require( 'lodash' );
 
 var Order = mongoose.model( 'Order' );
 var Product = mongoose.model( 'Product' );
@@ -79,6 +80,27 @@ router.get( '/', function( req, res ) {
 
 })
 
+function checkForExistingLineItem( cart, newLi ) {
+
+  return new Promise( function( ok, fail ) {
+    var eliIdx = _.findIndex( cart.lineItems, function( li ) {
+      return li.product.toString() === newLi.productId;
+    }) 
+
+    if ( eliIdx > -1 ) {
+
+      cart.lineItems[eliIdx].quantity += newLi.quantity;
+      cart.lineItems[eliIdx].save().then( ok, fail );
+    
+    } else {
+
+      ok( false );
+
+    }    
+  });
+
+}
+
 // POST /cart/ - add an item to the cart
 router.post( '/', function( req, res, next ) {
 
@@ -91,38 +113,51 @@ router.post( '/', function( req, res, next ) {
 
   }
 
-  // find the product specified by productId
-  Product.findById( req.body.productId ).exec()
-  .then( function( product ) {
+  // check to see if we already have a line item with that id
+  checkForExistingLineItem( req.session.cart, req.body )
+  .then( function( foundLi ) {
+
+    var lis = req.session.cart.lineItems || [];
+
+    // if we didn't match an existing item, create a new one
+    if ( foundLi === false ) {
+
+      return Product.findById( req.body.productId ).exec()
+      .then( function( product ) {
     
-    // check that the product exists
-    if ( product === null ) {
+        // check that the product exists
+        if ( product === null ) {
 
-      var badProductError = new Error( "Product not found" );
-      badProductError.status = 400;
-      next( badProductError );
+          var badProductError = new Error( "Product not found" );
+          badProductError.status = 400;
+          next( badProductError );
 
+        }
+
+        // create a new line item from that product
+        return Order.LineItem.fromProduct( req.body.quantity, product )
+        .then( function( li ) {
+
+          lis.push( li );
+          return lis;
+
+        });
+      });
+    } else {
+      return lis;
     }
 
-    // create a new line item from that product
-    Order.LineItem.fromProduct( req.body.quantity, product )
-    .then( function( li ) {
+  })
+  .then( function( lis ) {
 
-      var lis = req.session.cart.lineItems || [];
-      lis.push( li );
-
-      // update our cart with the new line items
-      Order.findByIdAndUpdate( req.session.cart._id, {
-        $set: { lineItems: lis }
-      }).populate( 'lineItems' )
-      .then( function( cart ) {
-     
-        cart.lineItems = lis;
-        res.status( 200 ).json( cart );
-     
-      }, next );
-
-    });
+    // update the cart
+    Order.findByIdAndUpdate( req.session.cart._id, {
+      lineItems: lis.slice()
+    }, {new: true} )
+    .then( function( cart ) {
+      res.status( 200 ).json( cart );
+    })
+    .then( null, next );
 
   })
   .then( null, next );

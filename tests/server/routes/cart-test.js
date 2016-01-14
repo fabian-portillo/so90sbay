@@ -223,6 +223,37 @@ describe('Cart Route', function () {
 
     });
 
+    it('only inserts one line item per product', function(done) {
+
+      var postData = {
+        productId: product._id,
+        quantity: 3
+      }
+
+      agent.post('/api/cart').send(postData)
+        .expect( 200 )
+        .end( function( err, res ) {
+          if ( err ) return err;
+
+          agent.post('/api/cart').send(postData)
+            .expect( 200 )
+            .end( function( err, res ) {
+              if ( err ) return err;
+
+              agent.get('/api/cart')
+                .end( function( err, res ) {
+                  if ( err ) return err;
+                
+                  var cart = res.body;
+                  expect( cart.lineItems.length ).to.equal( 1, "Cart has multiple line items in it" );
+                  expect( cart.lineItems[0].quantity ).to.equal( 6, "Adding a line item with an existing product should sum the line items" );
+
+                  done(); 
+                });
+            });
+        });
+    });
+
     it('can update items on a cart and retrieve the cart with those items updated', function( done ) {
 
       var postData = {
