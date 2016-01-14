@@ -1,7 +1,6 @@
 //TODO: GET previous orders
 var router = require('express').Router();
 module.exports = router;
-var _ = require('lodash');
 var mongoose = require('mongoose');
 
 var User = mongoose.model( 'User' );
@@ -38,7 +37,7 @@ router.get('/', (req,res,next) => {
  	.then(null, next)
 })
 
-router.get('/:id', (req,res,next) => {
+router.get('/:id', (req,res) => {
 	res.status(200).json( req.foundUser );
 })
 
@@ -75,7 +74,7 @@ router.put('/:id', adminOrSelfOnly, (req,res,next) => {
 router.delete('/:id', adminOrSelfOnly, (req,res,next) => {
 	var userId = req.params.id;
 	User.findOne({_id: userId}).remove().exec()
-	.then((user) => {
+	.then(() => {
 		res.status(204).end();
 	})
  	.then(null, next)
