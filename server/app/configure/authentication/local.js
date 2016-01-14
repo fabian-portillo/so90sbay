@@ -29,6 +29,28 @@ module.exports = function (app) {
     // A POST /login route is created to handle login.
     app.post('/login', function (req, res, next) {
 
+        var attachCartToUser = function (user) {
+
+            if ( req.session.cart ) {
+
+                req.session.cart.user = user._id;
+                user.cart = req.session.cart._id;
+
+                return Promise.all([
+                    user.save(),
+                    req.session.cart.save()
+                ]);
+
+            } else {
+
+                return new Promise( function( resolve, reject ) {
+                    resolve();
+                })
+
+            }
+
+        }
+
         var authCb = function (err, user) {
 
             if (err) return next(err);
@@ -42,9 +64,16 @@ module.exports = function (app) {
             // req.logIn will establish our session.
             req.logIn(user, function (loginErr) {
                 if (loginErr) return next(loginErr);
-                // We respond with a response object that has user with _id and email.
-                res.status(200).send({
-                    user: user.sanitize()
+
+                // check to see if there's a cart on the session, and attach it to the user
+                attachCartToUser( user )
+                .then( function() {
+
+                    // We respond with a response object that has user with _id and email.
+                    res.status(200).send({
+                        user: user.sanitize()
+                    });
+
                 });
             });
 
