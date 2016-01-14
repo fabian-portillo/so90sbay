@@ -1,7 +1,5 @@
 'use strict';
-var crypto = require('crypto');
 var mongoose = require('mongoose');
-var _ = require('lodash');
 
 function arrayLengthValidator (value) {
     return value.length >= 1
