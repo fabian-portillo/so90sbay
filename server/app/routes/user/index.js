@@ -62,10 +62,7 @@ router.post('/', (req,res,next) => {
 router.put('/:id', adminOrSelfOnly, (req,res,next) => {
 	var update = req.body;
 	var userId = req.params.id;
-	User.findByIdAndUpdate(userId, update)
-	.then((user) => {
-		return User.findOne(user._id)
-	})
+	User.findByIdAndUpdate(userId, update, { new: true })
 	.then((user) => {
 		res.status(200).json(user);
 	})
