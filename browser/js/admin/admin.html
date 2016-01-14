@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-2 admincp-nav">
+    <ul>
+      <li ng-repeat="panel in panels"><a ui-sref="adminControlPanel.{{ panel.name }}">{{ panel.niceName }}</a></li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-10 admincp-panel">
+    <ui-view>
+      <h2>Welcome!</h2>
+      <p>Select a panel from the left to begin</p>
+    </ui-view>
+  </div>
+</div>

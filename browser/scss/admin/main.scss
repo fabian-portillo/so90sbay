@@ -1,0 +1,53 @@
+.admincp-nav {
+  
+  padding: 0;
+  margin: 0;
+
+  ul {
+
+    margin: 0;
+    padding: 0;
+
+  }
+
+  li {
+
+    list-style: none;
+
+    a {
+
+      background: white;
+      display: inline-block;
+      border: 1px solid lightgray;
+      border-collapse: collapse;
+      text-align: center;
+      width: 100%;
+      height: 4em;
+
+      :hover {
+
+        background: lightgray;
+
+      }
+
+    }
+ 
+  }
+
+}
+
+.admincp-panel {
+
+  padding: 1em;
+
+  form {
+
+    clear: both;
+
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid lightgray;
+
+  }
+
+}
