@@ -3,7 +3,7 @@ app.directive('sidebar', function (SidebarFactory) {
     restrict: 'E',
     scope: {},
     templateUrl: '/js/common/directives/sidebar/sidebar.html',
-    link: function (scope) {
+    link: function (scope, element, attrs) {
 
       scope.categories = [
         { label: 'toys', state: 'products.toys' },
@@ -14,6 +14,14 @@ app.directive('sidebar', function (SidebarFactory) {
         { label: 'music', state: 'products.music' }
       ];
 
+      scope.sidebarState = SidebarFactory.getSidebarState;
+    }
+  };
+})
+.directive('sidebarMover', function (SidebarFactory) {
+  return {
+    restrict: 'A',
+    link: function (scope) {
       scope.sidebarState = SidebarFactory.getSidebarState;
     }
   };

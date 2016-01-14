@@ -132,6 +132,7 @@ describe('Review Route', function () {
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body.title).to.equal('UPDATED TITLE');
+          expect(res.body.body).to.equal('New Review Here');
           done();
         });
     });

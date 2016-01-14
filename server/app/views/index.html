@@ -15,10 +15,10 @@
     <script src="/main.js"></script>
 </head>
 <body ng-app="FullstackGeneratedApp">
-    <div>
+    <sidebar></sidebar>
+    <div sidebar-mover ng-class="{ 'move-right': sidebarState() }">
         <navbar></navbar>
-        <sidebar></sidebar>
+        <div id="main" ui-view></div>
     </div>
-    <div id="main" ui-view></div>
 </body>
 </html>
