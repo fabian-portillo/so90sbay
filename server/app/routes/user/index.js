@@ -37,9 +37,6 @@ router.get('/', (req,res,next) => {
  	.then(null, next)
 })
 
-
-// CHECK OVER THIS ROUTE --> LINTER GIVES US A WARNING ABOUT "NEXT"
-// SO I REMOVED "NEXT" -Rafi
 router.get('/:id', (req,res) => {
 	res.status(200).json( req.foundUser );
 })
