@@ -18,7 +18,11 @@
 
   <div id="product-details">
     <h2>{{ product.title }}</h2>
-    <small>Categories: <a ng-repeat="category in product.category" ui-sref="categoryList({category: category})">{{ category }}</a></small>
+    <small>Categories: 
+        <ul>
+          <li ng-repeat="category in product.category" class='category'><a ui-sref="categoryList({category: category})" >{{ category }}</a></li>
+        </ul>
+    </small>
     <p ng-repeat="paragraph in product.description.split('\n')">{{ paragraph }}</p>
   </div>
 
