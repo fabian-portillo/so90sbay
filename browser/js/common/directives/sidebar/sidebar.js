@@ -6,15 +6,16 @@ app.directive('sidebar', function (SidebarFactory) {
     link: function (scope, element, attrs) {
 
       scope.categories = [
-        { label: 'toys', state: 'products.toys' },
-        { label: 'posters', state: 'products.posters' },
-        { label: 'video games', state: 'products.video-games' },
-        { label: 'stuffed animals', state: 'products.stuffed-animals' },
-        { label: 'clothing', state: 'products.clothing' },
-        { label: 'music', state: 'products.music' }
+        { label: 'Toys', state: 'toys' },
+        { label: 'Posters', state: 'posters' },
+        { label: 'Video Games', state: 'video games' },
+        { label: 'Stuffed Animals', state: 'stuffed animals' },
+        { label: 'Clothing', state: 'clothing' },
+        { label: 'Music', state: 'music' }
       ];
 
       scope.sidebarState = SidebarFactory.getSidebarState;
+      
     }
   };
 })
