@@ -15,28 +15,26 @@ LineItemSchema.methods.getExtendedPrice = function() {
 
 LineItemSchema.statics.fromProduct = function( quantity, productId ) {
 
-  var LineItem = mongoose.model('Order').LineItem;
+  return new Promise( function( res, rej ) {
 
-  if ( productId.constructor === mongoose.model('Product') || productId.constructor === Object ) {
+    // if we're given an id, look it up in the database
+    if ( productId.constructor === mongoose.Schema.Types.ObjectId || typeof productId === 'string' ) {
+      mongoose.model('Product').findById( productId ).exec().then( res );
 
-    return LineItem.create({ quantity: quantity, price: productId.price, product: productId });
+    // assume that anything else we're passed in might be a product object
+    } else {
+      if ( productId._id === undefined ) rej( new TypeError( "Incompatible product type:" + productId.constructor.name ) );
 
-  } else if ( productId.constructor === mongoose.Schema.Types.ObjectId ) {
+      res( productId );
+    }
 
-    return mongoose.model('Product').findById( productId ).exec()
-    .then( function( product ) {
-      if ( product === null ) return console.error( "Could not find a product with the given product id" );
+  }).then( function( product ) {
+    if ( product === null ) throw new Error( "Product not found" );
 
-      return LineItem.create({ quantity: quantity, price: product.price, product: product._id });
-
-    })
-    .then( null, function( err ) {
-      console.error( "Tried to create a LineItem from a product but got an error:", err );
-    })
-
-  } else {
-    console.error( "Tried to create a LineItem from unknown product type:", productId.constructor.name );
-  }
+    return mongoose.model('Order').LineItem.create({ quantity: quantity, price: product.price, product: product._id });
+  }).then( null, function( err ) {
+    console.error( "Tried to create a LineItem from a product but got an error:", err );
+  })
 
 }
 
@@ -77,9 +75,6 @@ OrderSchema.statics.fromLineItems = function( lis, user ) {
     user : user,
     lineItems : lis,
     paymentInfo : null
-  })
-  .then( function( order ) {
-    return order;
   })
   .then( null, function( err ) {
     console.error( "Tried to create an order from line items but got an error:", err );
