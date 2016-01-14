@@ -31,21 +31,31 @@ module.exports = function (app) {
 
         var attachCartToUser = function (user) {
 
-            if ( req.session.cart ) {
-
-                req.session.cart.user = user._id;
-                user.cart = req.session.cart._id;
+            if ( req.session.cart && req.session.cart._id ) {
 
                 return Promise.all([
-                    user.save(),
-                    req.session.cart.save()
-                ]);
+                    User.findByIdAndUpdate(
+                        user._id,
+                        { cart: req.session.cart._id },
+                        { new: true }
+                    ),
+                    mongoose.model('Order').findByIdAndUpdate(
+                        req.session.cart._id,
+                        { user: user._id },
+                        { new: true }
+                    )
+                ])
+                .then( function( saveData ) {
+
+                    // have to update the user and cart data
+                    req.user = saveData[0];
+                    req.session.cart = saveData[1];
+
+                });
 
             } else {
 
-                return new Promise( function( resolve, reject ) {
-                    resolve();
-                })
+                return new Promise( function( ok ) { ok(); })
 
             }
 
@@ -74,7 +84,8 @@ module.exports = function (app) {
                         user: user.sanitize()
                     });
 
-                });
+                })
+                .then( null, next );
             });
 
         };
