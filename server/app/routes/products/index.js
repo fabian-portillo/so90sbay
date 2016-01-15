@@ -63,6 +63,17 @@ router.post('/', adminOnly, (req, res, next) => {
 	.then(null, next);
 })
 
+router.post('/search', (req, res, next) => {
+	var searchInput = req.body.searchInput;
+	var regExSearch = new RegExp(searchInput, "i")
+	Product.find()
+	.or([{title: regExSearch},{category: regExSearch}])
+	.then((product) => {
+		res.status(200).json(product);
+	})
+	.then(null, next);
+})
+
 
 //double check this one; not so comfortable with Put requests
 router.put('/:id', adminOnly, (req, res, next) => {
