@@ -1,0 +1,30 @@
+<div class="row">
+  <h2 class="panel-title pull-left">User Manager</h2>
+  <div class="panel-search pull-left">
+    <input type="text" class="form-control" ng-model="search" placeholder="Search">
+  </div>
+</div>
+<hr>
+<table>
+  <tr>
+    <th>User ID</th>
+    <th>E-Mail Address</th>
+    <th>Has Active Cart?</th>
+    <th>Is Admin?</th>
+    <th>Password Reset</th>
+  </tr>
+
+  <tr ng-repeat="user in users | filter:search">
+    <td>{{ user._id }}</td>
+    <td><input type="text" ng-model="user.email" class="form-control"></td>
+    <td>{{ !!user.cart }}</td>
+    <td><input type="checkbox" ng-model="user.isAdmin"></td>
+    <td><input type="checkbox" ng-model="user.passwordReset"></td>
+    <td>
+      <button class="btn btn-primary" ng-click="saveUser( user )">Save Changes</button>
+      <button class="btn btn-danger" ng-click="deleteUser( user )">Delete</button>
+    </td>
+    <td><a href="#">Order History</a></td>
+    <td><a href="#">Reviews Authored</a></td>
+  </tr>
+</table>
