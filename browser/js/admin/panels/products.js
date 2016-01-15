@@ -34,31 +34,35 @@ app.controller( 'ProductsPanelCtrl', function( $scope, ProductFactory ) {
   $scope.saveProduct = function( p ) {
 
     var pid = p._id;
-    p = sanitizeProduct( p );
-    ProductFactory.updateProduct( pid, p )
+    ProductFactory.updateProduct( pid, sanitizeProduct( p ) )
     .then( prepareProduct )
     .then( function( updatedP ) {
-      p = prepareProduct( updatedP );
+      p = updatedP;
     });
 
   }
 
   $scope.createProduct = function( p ) {
 
-    console.log("creating product!")
-
-    p = sanitizeProduct( p );
-    ProductFactory.createNewProduct( p )
+    ProductFactory.createNewProduct( sanitizeProduct( p ) )
+    .then( prepareProduct )
     .then( function( newProduct ) {
       p = {};
-      $scope.products.push( prepareProduct( newProduct ) );
+      $scope.products.push( newProduct );
     });
 
   }
 
   $scope.deleteProduct = function( p ) {
 
-    ProductFactory.deleteProduct( p._id );
+    if( confirm( "Are you sure you want to delete " + p.title + "? This action cannot be undone.") ) {
+      ProductFactory.deleteProduct( p._id )
+      .then( function() {
+        var pidx = $scope.products.indexOf( p );
+
+        if ( pidx > -1 ) $scope.products.splice( pidx, 1 );
+      });
+    }
 
   }
 
