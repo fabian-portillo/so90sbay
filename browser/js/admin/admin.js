@@ -2,7 +2,8 @@ app.config( function ( $stateProvider ) {
 
   var installed_panels = [
     'products',
-    'users'
+    'users',
+    'orders'
   ];
 
   $stateProvider.state( 'adminControlPanel', { 
