@@ -38,8 +38,23 @@ describe('OrderFactory', function() {
 
       OrderFactory.fetchAll().then( function( orders ) {
 
-        console.log("FUASIOEAOIG", orders );
         expect( orders[0].works ).to.be.true;
+        done();
+
+      });
+
+      $httpBackend.flush();
+
+    });
+
+    it('should return undefined if it\'s unauthorized', function(done) {
+
+      $httpBackend.expectGET('/api/orders');
+      $httpBackend.whenGET('/api/orders').respond( 401, {} );
+
+      OrderFactory.fetchAll().then( function( orders ) {
+
+        expect( orders ).to.be.undefined;
         done();
 
       });
