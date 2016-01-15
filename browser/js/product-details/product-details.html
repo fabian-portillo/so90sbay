@@ -28,6 +28,11 @@
 
   <hr class="clearfix">
 
+  <div>
+    <button type='button' ng-click='showForm()' ng-show='!visible'>Write a Review</button>
+    <review-form ng-show='visible'></review-form>
+  </div>
+
   <div class="review-list">
     <review ng-repeat="review in product.reviews" review="review"></review>
   </div>
