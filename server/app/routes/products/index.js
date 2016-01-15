@@ -68,13 +68,7 @@ router.post('/', adminOnly, (req, res, next) => {
 router.put('/:id', adminOnly, (req, res, next) => {
 	var id = req.params.id;
 	var update = req.body;
-	Product.findOne(id)
-	.then((product) => {
-		return product.update(update);
-	})
-	.then(() => {
-		return Product.findOne(id);
-	})
+	Product.findByIdAndUpdate(id, update, {new: true})
 	.then((product) => {
 		res.status(200).json(product);
 	})
