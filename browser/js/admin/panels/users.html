@@ -5,7 +5,7 @@
   </div>
 </div>
 <hr>
-<table>
+<table ng-show="!!users.length">
   <tr>
     <th>User ID</th>
     <th>E-Mail Address</th>
@@ -28,3 +28,6 @@
     <td><a ui-sref="adminControlPanel.reviews({search:user._id})">Reviews Authored</a></td>
   </tr>
 </table>
+<div ng-show="!users.length">
+  <h3 class="text-center">Loading User List...</h3>
+</div>
