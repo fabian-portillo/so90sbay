@@ -32,9 +32,14 @@ app.config( function ( $stateProvider ) {
 
     $stateProvider.state( 'adminControlPanel.' + panelInstance.name, {
 
-      url: '/' + panelInstance.name,
+      url: '/' + panelInstance.name + '?search',
       templateUrl: panelInstance.templateSrc,
       controller: panelInstance.niceName + 'PanelCtrl',
+      resolve: {
+        'search' : function( $stateParams ) {
+          return $stateParams.search;
+        }
+      }
       // resolve: {
       //   'panel' : function() { return panelInstance }
       // }

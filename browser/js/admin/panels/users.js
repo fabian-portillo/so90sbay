@@ -1,4 +1,6 @@
-app.controller( 'UsersPanelCtrl', function( $scope, UserFactory ) {
+app.controller( 'UsersPanelCtrl', function( $scope, UserFactory, search ) {
+
+  $scope.search = search;
 
   $scope.saveUser = function( u ) {
 

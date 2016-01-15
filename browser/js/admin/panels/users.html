@@ -24,7 +24,7 @@
       <button class="btn btn-primary" ng-click="saveUser( user )">Save Changes</button>
       <button class="btn btn-danger" ng-click="deleteUser( user )">Delete</button>
     </td>
-    <td><a href="#">Order History</a></td>
-    <td><a href="#">Reviews Authored</a></td>
+    <td><a ui-sref="adminControlPanel.orders({search:user._id})">Order History</a></td>
+    <td><a ui-sref="adminControlPanel.reviews({search:user._id})">Reviews Authored</a></td>
   </tr>
 </table>
