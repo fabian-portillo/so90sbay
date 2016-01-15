@@ -22,25 +22,25 @@ app.config( function ( $stateProvider ) {
   });
 
   installed_panels = installed_panels.map( function( panel ) {
-    var panel = {
+    var panelInstance = {
       name: panel,
       niceName : panel[0].toUpperCase() + panel.slice( 1 ),
       src : '/js/admin/panels/' + panel + '.js',
       templateSrc : '/js/admin/panels/' + panel + '.html',
     }
 
-    $stateProvider.state( 'adminControlPanel.' + panel.name, {
+    $stateProvider.state( 'adminControlPanel.' + panelInstance.name, {
 
-      url: '/' + panel.name,
-      templateUrl: panel.templateSrc,
-      controller: panel.niceName + 'PanelCtrl',
+      url: '/' + panelInstance.name,
+      templateUrl: panelInstance.templateSrc,
+      controller: panelInstance.niceName + 'PanelCtrl',
       // resolve: {
-      //   'panel' : function() { return panel }
+      //   'panel' : function() { return panelInstance }
       // }
 
     });
 
-    return panel;
+    return panelInstance;
   });
 
 }).controller( 'AdminCtrl', function( $scope, $state, isAdmin, panels ) {

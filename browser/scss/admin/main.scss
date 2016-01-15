@@ -20,9 +20,11 @@
       display: inline-block;
       border: 1px solid lightgray;
       border-collapse: collapse;
+      font-size: 14pt;
+      font-weight: bold;
       text-align: center;
       width: 100%;
-      height: 4em;
+      height: 50px;
 
       :hover {
 
@@ -39,6 +41,24 @@
 .admincp-panel {
 
   padding: 1em;
+
+  .panel-title {
+
+    font-size: 24pt;
+    font-weight: bold;
+    padding: 0.5em;
+
+  }
+
+  .panel-search {
+
+    min-width: 500px;
+    max-width: 50%;
+    margin: 0.5em;
+    margin-top: 1.5em;
+    vertical-align: bottom;
+
+  }
 
   form {
 
