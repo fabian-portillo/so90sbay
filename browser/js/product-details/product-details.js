@@ -16,7 +16,7 @@ app.config( function ( $stateProvider ) {
 
   });
 
-}).controller( 'ProductDetailCtrl', function( $scope, product, reviews, Cart ) {
+}).controller( 'ProductDetailCtrl', function( $scope, product, reviews, Cart, ReviewFactory ) {
 
   $scope.product = product;
   $scope.product.reviews = reviews;
@@ -29,6 +29,53 @@ app.config( function ( $stateProvider ) {
 
   $scope.changeMainImage = function( image ) {
     $scope.mainImage = image;
+  }
+
+  $scope.visible = false;
+
+  $scope.showForm = function() {
+    $scope.visible = !($scope.visible);
+    $scope.newReview = {
+      title: null,
+      body: null,
+      rating: null,
+      user: null,
+      product: product._id
+    }
+  }
+
+  $scope.newReview = {
+    title: null,
+    body: null,
+    rating: null,
+    user: null,
+    product: product._id
+  }
+
+  $scope.setRating = function(rate) {
+    $scope.newReview.rating = rate;
+    $scope.currentRating = rate;
+  }
+
+  $scope.stars = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5
+  };
+
+  $scope.addReview = function () {
+    ReviewFactory.addReview(newReview);
+
+    $scope.newReview = {
+      title: null,
+      body: null,
+      rating: null,
+      user: null,
+      product: product._id
+    }
+
   }
 
 });
