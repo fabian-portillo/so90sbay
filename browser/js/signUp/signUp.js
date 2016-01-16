@@ -39,7 +39,7 @@ app.controller('SignUpCtrl', function ($scope, $state, AuthService, SignUpFactor
             };
         });
     };
-
+    
     return signUp;
 })
 
