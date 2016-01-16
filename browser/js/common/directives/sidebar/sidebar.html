@@ -3,7 +3,7 @@
   <hr>
     <ul>
       <li ng-repeat="category in categories">
-        <a ui-sref="categoryList ({ category: category.state })">{{ category.label }} <span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+        <a ui-sref="categoryList ({ category: category.state })" ng-click="toggleCategories()">{{ category.label }} <span class="glyphicon glyphicon-circle-arrow-right"></span></a>
       </li>
     </ul>
 </div>
