@@ -16,9 +16,4 @@ module.exports = {
     "clientSecret": "LFwY9nO0u-x0Z_ZQvF-zBZNY",
     "callbackURL": "http://127.0.0.1:1337/auth/google/callback"
   }
-  // "GOOGLE": {
-  //   "clientID": "573686842012-p9g1sbvv69vkosk9pg351poc7hppglq4.apps.googleusercontent.com",
-  //   "clientSecret": "p-c8yJGeKhp1-cBCCvzs0Cx1",
-  //   "callbackURL": "http://192.168.3.30:1337/auth/google/callback"
-  // }
 };

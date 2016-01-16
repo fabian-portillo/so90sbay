@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('LoginCtrl', function ($scope, AuthService, $state, $http) {
+app.controller('LoginCtrl', function ($scope, AuthService, $state) {
 
     $scope.login = {};
     $scope.error = null;
@@ -23,10 +23,6 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, $http) {
             $scope.error = 'Invalid login credentials.';
         });
 
-    };
-
-    $scope.getGoogle = function () {
-        return $http.get('/auth/google');
     };
 
 });
