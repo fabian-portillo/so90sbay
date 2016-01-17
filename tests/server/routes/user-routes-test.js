@@ -122,6 +122,31 @@ describe('User Route', function () {
 				});
 		});
 
+		it('should not allow users to change their admin status', function (done) {
+			userAgent.post('/login').send({
+				email: userTwo.email,
+				password: userTwo.password
+			})
+				.end( function( err, res ) {
+
+					userAgent
+					.put('/api/user/' + createdUsers[1]._id)
+					.send({
+							email: 'updatedemail@gmail.com',
+							isAdmin: true
+						})
+					.expect(200)
+					.end(function (err, response) {
+						if (err) return done(err);
+						expect(response.body).to.be.an('object');
+						expect(response.body.email).to.equal("updatedemail@gmail.com")
+						expect(response.body.isAdmin).to.equal(false);
+						done();
+					});
+				
+				});
+		});
+
 		it('should allow admins to update other users', function (done) {
 			userAgent.post('/login').send({
 				email: userOne.email,
@@ -149,7 +174,7 @@ describe('User Route', function () {
 		it('should not allow unauthorized users to update other users', function (done) {
 			userAgent.put('/api/user/' + createdUsers[0]._id)
 				.send({
-					email: 'updatedemail@gmail.com'
+					email: 'updatedemail@gmail.com',
 				})
 				.expect(401)
 				.end( function( err, res ) {
