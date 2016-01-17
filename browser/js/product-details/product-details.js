@@ -11,12 +11,15 @@ app.config( function ( $stateProvider ) {
       },
       'reviews' : function( ProductFactory, $stateParams ) {
         return ProductFactory.getProductReviews( $stateParams.productId );
+      },
+      'userId': function (AuthService) {
+        return AuthService.getLoggedInUser();
       }
     }
 
   });
 
-}).controller( 'ProductDetailCtrl', function( $scope, product, reviews, Cart, ReviewFactory ) {
+}).controller( 'ProductDetailCtrl', function( $scope, product, userId, reviews, Cart, ReviewFactory, AuthService ) {
 
   $scope.product = product;
   $scope.product.reviews = reviews;
@@ -39,7 +42,7 @@ app.config( function ( $stateProvider ) {
       title: null,
       body: null,
       rating: null,
-      user: null,
+      user: userId._id,
       product: product._id
     }
   }
@@ -48,9 +51,10 @@ app.config( function ( $stateProvider ) {
     title: null,
     body: null,
     rating: null,
-    user: null,
+    user: userId,
     product: product._id
   }
+
 
   $scope.setRating = function(rate) {
     $scope.newReview.rating = rate;
@@ -66,16 +70,19 @@ app.config( function ( $stateProvider ) {
   };
 
   $scope.addReview = function () {
-    ReviewFactory.addReview(newReview);
-
-    $scope.newReview = {
-      title: null,
-      body: null,
-      rating: null,
-      user: null,
-      product: product._id
-    }
+    ReviewFactory.addReview(newReview)
+    .then(function(review) {
+      $scope.newReview = {
+        title: null,
+        body: null,
+        rating: null,
+        user: null,
+        product: product._id
+      }
+    });
 
   }
+
+
 
 });
