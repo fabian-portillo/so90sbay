@@ -5,14 +5,18 @@
 			<div class="carousel-caption">
          	 	<p>{{slide.text}}</p>
     		</div>
-			<img ng-src="{{slide.image}}">
+			<img class="slider-image" ng-src="{{slide.image}}">
 	    </slide>
 	 </carousel>
 <!--  PAGER -->
 	<div class="recommended-products">
 	<h3>Recommended Products:</h3>
 	<div class="row-fluid product-grid" ng-repeat="product in products">
-	    <a ui-sref="productDetails({productId: product._id})"><product-thumbnail product="product"></product-thumbnail></a>
+		<div class="product-image-div">
+		    <a ui-sref="productDetails({productId: product._id})">
+		    	<product-thumbnail product="product"></product-thumbnail>
+		    </a>
+	    </div>
     </div>
     </div>
 </section>
