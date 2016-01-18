@@ -164,7 +164,7 @@ var seedUsers = function () {
         },
         {
             title: 'Playdate with Britney Spears',
-            description: "It's Britney, bitch.",
+            description: "I don't like defining myself. I just am.",
             price: 9.99,
             quantity: 567,
             category: ['celebrity playdate'],
@@ -188,7 +188,7 @@ var seedUsers = function () {
         },
         {
             title: 'Playdate with Bill Clinton',
-            description: 'I tried marijuana once. I did not inhale\nDisclaimer: Bill Clinton is currently suspended from playdates...',
+            description: 'When I took office, only high energy physicists had ever heard of what is called the Worldwide Web... now even my cat has its own page\nDisclaimer: Bill Clinton is currently suspended from playdates...',
             price: 600.00,
             quantity: 0,
             category: ['celebrity playdate'],
