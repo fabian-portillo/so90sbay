@@ -6,7 +6,6 @@ app.factory('OrderFactory', function ( $http ) {
 
     return $http.get('/api/orders')
       .then( function( res ) { 
-        console.log( "OUTPUT!!!!!!!!!!!!!!!!!", res.data );
         return res.data;
       })
       .then( null, function( err ) {
@@ -14,6 +13,16 @@ app.factory('OrderFactory', function ( $http ) {
         console.log( err );
 
       });
+
+  }
+
+  OrderFactory.fetchOne = function( id ) {
+
+    return $http.get('/api/orders/' + id.toString())
+    .then( function( res ) {
+      return res.data;
+    })
+    .then( null, console.log );
 
   }
 
