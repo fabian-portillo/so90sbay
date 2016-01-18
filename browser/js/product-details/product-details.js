@@ -19,7 +19,7 @@ app.config( function ( $stateProvider ) {
 
   });
 
-}).controller( 'ProductDetailCtrl', function( $scope, product, userId, reviews, Cart, ReviewFactory, AuthService ) {
+}).controller( 'ProductDetailCtrl', function( $scope, product, userId, reviews, Cart, ReviewFactory, ProductFactory, AuthService ) {
 
   $scope.product = product;
   $scope.product.reviews = reviews;
@@ -36,8 +36,9 @@ app.config( function ( $stateProvider ) {
 
   $scope.visible = false;
 
+
   $scope.showForm = function() {
-    $scope.visible = !($scope.visible);
+    $scope.visible = true;
     $scope.newReview = {
       title: null,
       body: null,
@@ -46,6 +47,22 @@ app.config( function ( $stateProvider ) {
       product: product._id
     }
   }
+
+  $scope.hideForm = function(){
+    $scope.visible = false;
+    $scope.newReviewForm.$setPristine();
+    $scope.newReviewForm.$setUntouched();
+  }
+
+  $scope.checkUser = function () {
+    console.log(userId);
+    if (userId !== null) return true;
+    return false;
+  }
+
+  $scope.loggedIn = $scope.checkUser();
+
+  console.log($scope.loggedIn);
 
   $scope.newReview = {
     title: null,
@@ -70,15 +87,17 @@ app.config( function ( $stateProvider ) {
   };
 
   $scope.addReview = function () {
-    ReviewFactory.addReview(newReview)
+    ReviewFactory.addReview($scope.newReview)
     .then(function(review) {
       $scope.newReview = {
         title: null,
         body: null,
         rating: null,
-        user: null,
+        user: userId._id,
         product: product._id
-      }
+      };
+      $scope.newReviewForm.$setPristine();
+      $scope.newReviewForm.$setUntouched();
     });
 
   }
