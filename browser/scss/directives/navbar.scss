@@ -1,4 +1,7 @@
+
+
 navbar {
+
 
   display: block;
   background: white;
@@ -33,11 +36,11 @@ navbar {
     cursor: pointer;
     transition: color 0.2s;
     &.active {
-      color: darken(#f31214, 10%);
+      color: $highlight-color;
     }
     &:hover {
       background: none;
-      color: #f31214;
+      color: $highlight-color;
     }
     &:focus {
       background: none;

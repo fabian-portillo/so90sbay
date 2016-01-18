@@ -1,3 +1,6 @@
+$highlight-color: #2BE3FF;
+$text-color: magenta;
+
 * {
   box-sizing: border-box;
 }
@@ -32,4 +35,5 @@ body {
 @import 'product-details/main';
 @import 'signUp/main';
 @import 'quicklook/main';
+@import 'animations/main';
 

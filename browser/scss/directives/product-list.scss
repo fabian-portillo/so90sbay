@@ -39,7 +39,11 @@ product-list {
 	}
 
 	a {
-		font-weight: bold
+		font-weight: bold;
+		color: $text-color;
+		hover {
+			color: black;
+		}
 	}
 
 	p {
