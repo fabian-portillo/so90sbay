@@ -153,9 +153,47 @@ var seedUsers = function () {
             quantity: 222,
             category: ['toys'],
             photo: ['https://upload.wikimedia.org/wikipedia/en/7/70/Furby_picture.jpg']
-        }
-
-       
+        },
+        {
+            title: 'Playdate with Mike Tyson',
+            description: "When I was in prison, I was wrapped up in all those deep books. That Tolstoy crap - people shouldn't read that stuff",
+            price: 449.99,
+            quantity: 1,
+            category: ['celebrity playdate'],
+            photo: ['https://ombyum.files.wordpress.com/2014/03/revisiting-young-mike-tyson1537105053-jul-19-2012-600x400.jpg']
+        },
+        {
+            title: 'Playdate with Britney Spears',
+            description: "I don't like defining myself. I just am.",
+            price: 9.99,
+            quantity: 567,
+            category: ['celebrity playdate'],
+            photo: ['http://www.latimes.com/includes/projects/hollywood/portraits/britney_spears.jpg']
+        },
+        {
+            title: 'Playdate with Brett Favre',
+            description: "Live deals you a lot of lessons, some people learn from it, some people don't",
+            price: 500.00,
+            quantity: 3,
+            category: ['celebrity playdate'],
+            photo: ['http://allgbp.com/wp-content/uploads/2014/06/19-brett-favre-super-bowl-winning-quarterbacks.jpg']
+        },
+        {
+            title: 'Playdate with Tupac',
+            description: "All I'm trying to do is survive and make good out of the dirty, nast, unbelievable lifestyle that they gave me.",
+            price: 1000000000,
+            quantity: 0,
+            category: ['celebrity playdate'],
+            photo: ['http://cbsnews1.cbsistatic.com/hub/i/2011/06/15/3eb74f30-a643-11e2-a3f0-029118418759/tupac_shakur.jpg']
+        },
+        {
+            title: 'Playdate with Bill Clinton',
+            description: 'When I took office, only high energy physicists had ever heard of what is called the Worldwide Web... now even my cat has its own page\nDisclaimer: Bill Clinton is currently suspended from playdates...',
+            price: 600.00,
+            quantity: 0,
+            category: ['celebrity playdate'],
+            photo: ['https://transition2008.files.wordpress.com/2008/03/bill-clinton.jpg']
+       }
     ];
 
 

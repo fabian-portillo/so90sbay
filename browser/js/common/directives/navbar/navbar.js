@@ -8,14 +8,17 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
 
             scope.items = [
                 { label: 'Home', state: 'home' },
-                { label: 'Products', state: 'productList' },
-                { label: 'Members Only', state: 'membersOnly', auth: true }
+                { label: 'Products', state: 'productList' }
             ];
 
             scope.user = null;
 
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
+            };
+
+            scope.isAdmin = function() {
+                return AuthService.isAdmin();
             };
 
             scope.logout = function () {
