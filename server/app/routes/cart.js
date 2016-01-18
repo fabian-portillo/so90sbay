@@ -114,7 +114,7 @@ function checkForExistingLineItem( cart, newLi ) {
 
   return new Promise( function( ok, fail ) {
     var eliIdx = _.findIndex( cart.lineItems, function( li ) {
-      return li.product.toString() === newLi.productId;
+      return (li.product._id? li.product._id.toString() : li.product.toString()) === newLi.productId;
     }) 
 
     if ( eliIdx > -1 ) {
@@ -208,7 +208,7 @@ router.put( '/', function( req, res, next ) {
 
   // find the line item with the associated product id
   var lineToChange = req.session.cart.lineItems.reduce( function( match, li ) {
-    if ( li.product.toString() === req.body.productId ) return li;
+    if ( (li.product._id? li.product._id.toString(): li.product.toString()) === req.body.productId ) return li;
     else return match;
   }, null )
 
