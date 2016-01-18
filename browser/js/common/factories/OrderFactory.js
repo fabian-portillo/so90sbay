@@ -16,6 +16,16 @@ app.factory('OrderFactory', function ( $http ) {
 
   }
 
+  OrderFactory.fetchOne = function( id ) {
+
+    return $http.get('/api/orders/' + id.toString())
+    .then( function( res ) {
+      return res.data;
+    })
+    .then( null, console.log );
+
+  }
+
   return OrderFactory;
 
 });

@@ -10,24 +10,16 @@
     <th>Order ID</th>
     <th>Associated User</th>
     <th>Completed?</th>
+    <th>Number of Items</th>
     <th>Shipping Address</th>
     <th>Billing Address</th>
   </tr>
-
   <tr ng-repeat="order in orders | filter:search">
     <td>{{ order._id }}</td>
     <td ng-show="order.user"><a ui-sref="adminControlPanel.users({search:order.user})">{{ order.user }}</a></td>
     <td ng-show="!order.user">Guest</td>
     <td>{{ !!order.paymentInfo }}</td>
-    
-    
-    <tr ng-repeat="li in order.lineItems">
-      <td></td>
-      <td>{{ li.quantity }}</td>
-      <td>{{ li.product }}</td>
-      <td>{{ li.price * li.quantity }}</td>
-
-    </tr>
+    <td>{{ order.lineItems.length }}</td>
   </tr>
 </table>
 <div ng-show="!orders.length">

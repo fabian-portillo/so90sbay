@@ -27,6 +27,7 @@ router.use( '/', function( req, res, next ) {
     } else {
 
       // create a new cart for this session
+      console.log( "Creating new cart for session. . ." );
       req.session.cart = new Order({});
       if ( authed ) req.session.cart.user = req.user._id;
 
@@ -34,6 +35,7 @@ router.use( '/', function( req, res, next ) {
       req.session.cart.save()
       .then( function( cart ) {
 
+        console.log( "Cart created successfully!" );
         // if a user is signed in, persist the cart on their object
         if ( authed ) {
 
@@ -52,18 +54,46 @@ router.use( '/', function( req, res, next ) {
   } else {
 
     // make sure the line items are populated
-    if ( req.session.cart.lineItems.length && 
-         typeof req.session.cart.lineItems[0] !== "object" ) {
-      
-      Promise.all( req.session.cart.lineItems.map( function( li_id ) {
+    if ( req.session.cart.lineItems && req.session.cart.lineItems.length ) {
+
+      return Promise.all( req.session.cart.lineItems.map( function( li_id ) {
         return Order.LineItem.findById( li_id ).exec();
       }))
       .then( function( lis ) {
 
+        return Promise.all( lis.map( function( li_obj ) {
+          if ( li_obj === null ) return null;
+          console.log( "the product:", li_obj.product );
+          return Product.findById( li_obj.product ).exec();
+        }))
+        .then( function( prods ) {
+
+          return lis.map( function( li_obj, li_idx ) {
+
+            var product = prods[li_idx];
+
+            if ( ( product ) === null ) {
+              console.error( "Could not find product in cart:", li_obj.product );
+              return li_obj;
+            }
+
+            li_obj.product = prods[li_idx];
+            return li_obj;
+
+          })
+
+        })
+        .then( null, next );
+
+      })
+      .then( function( lis ) {
+
         req.session.cart.lineItems = lis;
+        console.log( req.session.cart )
         next();
 
       })
+      .then( null, next );
     
     } else {
       next();
@@ -224,7 +254,7 @@ router.delete( '/:productId', function( req, res, next ) {
 
   // find the line to delete
   var lineToDeleteIdx = req.session.cart.lineItems.reduce( function( match, li, idx ) {
-    if ( ( li.product._id ? li.product._id : li.product.toString() ) === req.params.productId ) return idx;
+    if ( ( li.product._id ? li.product._id.toString() : li.product.toString() ) === req.params.productId ) return idx;
     else return match;
   }, null )
 
