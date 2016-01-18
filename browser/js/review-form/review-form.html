@@ -1,0 +1,29 @@
+<form name="newReviewForm">
+	<div class='rate'>
+		<button ng-click='setRating(1)' ng-class='{"starred": stars.one <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(2)' ng-class='{"starred": stars.two <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(3)' ng-class='{"starred": stars.three <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(4)' ng-class='{"starred": stars.four <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(5)' ng-class='{"starred": stars.five <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+	</div>
+	<div class='form-group'>	
+		<label for='title'>Title:</label>
+		<input type='text' name='title' class='form-control input-sm' ng-model="newReview.title">
+		<label for='description'>Description:</label>
+		<textarea name='desription' class='form-control' ng-model="newReview.body"></textarea>
+		<input type='submit' id='click'>
+		<button ng-click='showForm()' id='remove'>
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+	</div>
+</form>
