@@ -15,6 +15,7 @@ app.directive('sidebar', function (SidebarFactory) {
       ];
 
       scope.sidebarState = SidebarFactory.getSidebarState;
+      scope.toggleCategories = SidebarFactory.toggleCategories;
       
     }
   };
