@@ -33,10 +33,6 @@ button.ng-hide-add {
   transition:all .4s ease-in-out;
 }
 
-/*[ui-view].ng-leave {
-  -webkit-transition:all .25s ease-in-out;
-  transition:all .5s ease-in-out;
-}*/
 
 [ui-view].ng-enter {
   opacity: 0;
@@ -54,20 +50,6 @@ button.ng-hide-add {
   opacity: 0;
 }
 
-
-/*@keyframes fadeIn {
-    0%   {opacity: 0;}
-    10%   {opacity: .1;}
-    20%   {opacity: .2;}
-    30%   {opacity: .3;}
-    40%   {opacity: .4;}
-    50%   {opacity: .5;}
-    60%   {opacity: .6;}
-    70%   {opacity: .7;}
-    80%   {opacity: .8;}
-    90%   {opacity: .9;}
-    100% {opacity: 1;}
-}*/
 
 @keyframes fadeIn {
     from { opacity:0; }
