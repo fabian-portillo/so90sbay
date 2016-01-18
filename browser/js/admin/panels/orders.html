@@ -5,6 +5,31 @@
   </div>
 </div>
 <hr>
+<table ng-show="!!orders.length">
+  <tr>
+    <th>Order ID</th>
+    <th>Associated User</th>
+    <th>Completed?</th>
+    <th>Shipping Address</th>
+    <th>Billing Address</th>
+  </tr>
+
+  <tr ng-repeat="order in orders | filter:search">
+    <td>{{ order._id }}</td>
+    <td ng-show="order.user"><a ui-sref="adminControlPanel.users({search:order.user})">{{ order.user }}</a></td>
+    <td ng-show="!order.user">Guest</td>
+    <td>{{ !!order.paymentInfo }}</td>
+    
+    
+    <tr ng-repeat="li in order.lineItems">
+      <td></td>
+      <td>{{ li.quantity }}</td>
+      <td>{{ li.product }}</td>
+      <td>{{ li.price * li.quantity }}</td>
+
+    </tr>
+  </tr>
+</table>
 <div ng-show="!orders.length">
   <h3 class="text-center">Loading Order List...</h3>
 </div>
