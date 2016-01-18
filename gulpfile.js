@@ -130,7 +130,7 @@ gulp.task('build', function () {
     }
 });
 
-gulp.task('end', ['testBrowserJS','testServerJSWithCoverage'], function() {
+gulp.task('end', ['testServerJSWithCoverage'], function() {
   process.exit(0);
 });
 
