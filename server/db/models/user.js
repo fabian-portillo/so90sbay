@@ -31,6 +31,9 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
+    },
+    recHistory: {
+        type: [String]
     }
 });
 

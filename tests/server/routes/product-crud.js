@@ -96,12 +96,43 @@ describe('Products Route', function () {
 			.then(null, done);
 		})
 
+
+		var adminCreds = {
+				email: "joe@fullstack.com",
+				password: "password",
+				isAdmin: true
+			}
+
+		beforeEach('create admin account', function (done) {
+			User.create(adminCreds)
+				.then( function() { done() }, done );
+		})
+
 		it('should find a single product by id', function(done){
-			productAgent.get('/api/product/' + productId).expect(200).end(function (err, response) {
+			productAgent.get('/api/product/' + productId)
+			.expect(200)
+			.end(function (err, response) {
 				if (err) return done(err);
 				expect(response.body.title).to.equal('Bop-It');
 				done();
 			})
+		})
+
+		it('should update User with with rec History', function (done) {
+			productAgent.post('/login').send(adminCreds)
+				.end( function( err, res ) {
+					if (err) done(err);
+					productAgent.get('/api/product/' + productId)
+					.expect(200)
+					.end(function (err, res) {
+						if (err) done(err);
+						User.find({ email: "joe@fullstack.com" }).exec()
+							.then(function (response) {
+								expect(response.recHistory).to.be.an('array');
+							});
+						done();			
+					})
+				})
 		})
 
 	})

@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 
 var Product = mongoose.model('Product');
 var Review = mongoose.model('Review');
+var User = mongoose.model('User');
 
 var adminOnly = function( req, res, next ) {
 	if ( req.user && req.user.isAdmin ) {
@@ -24,7 +25,16 @@ router.get('/', (req,res,next) => {
 
 router.get('/:id', (req, res, next) => {
 	var id = req.params.id;
-	console.log(id);
+	// This will add the product ID to User recommendation history
+	if (req.user) {
+		User.findById(req.user._id)
+			.then(function (user) {
+				user.recHistory.push(id);
+				user.save();
+			})
+			.then(null, next);
+	}
+
 	Product.findById(id)
 	.exec()
 	.then(function(product){
