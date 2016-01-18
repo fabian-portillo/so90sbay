@@ -24,9 +24,36 @@ router.param('id', function ( req, res, next, id ) {
     if ( order === null ) return res.status( 404 ).end();
 
     // you cannot look up another user's order via the order API
-    if ( order.user._id.toString() === req.user._id.toString() || req.user.isAdmin ) {
-      req.order = order;
-      next();
+    if ( order.user.toString() === req.user._id.toString() || req.user.isAdmin ) {
+
+      if ( order.lineItems.length ) {
+
+        // mongoose can't populate arrays and collapses them if we try to do it ourselves
+        // we have to get rid of the mongoose objects because of this behavior
+        Promise.all( order.lineItems.map( function( li_id ) {
+          return Order.LineItem.findById( li_id ).exec();
+        }))
+        .then( function( lis ) {
+
+          req.order = {
+            _id: order._id,
+            user: order.user,
+            paymentInfo: order.paymentInfo,
+            lineItems: lis
+          };
+
+          next();
+
+        })
+
+      } else {
+
+        console.log("FUCK YOU BITCH")
+        req.order = order;
+        next();
+
+      }
+
     } else {
       res.status( 401 ).end()
     }
@@ -38,7 +65,7 @@ router.param('id', function ( req, res, next, id ) {
 
 router.get('/', adminOnly, function ( req, res, next ) {
 
-  Order.find().populate('lineItems paymentInfo').exec()
+  Order.find().populate('paymentInfo').exec()
   .then( function( orders ){
     res.status(200).json(orders);
   })

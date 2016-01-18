@@ -1,29 +1,29 @@
-app.factory('UserFactory',function ($http) {
+app.factory( 'UserFactory', function( $http ) {
 
-    var User = {};
+  var UserFactory = {};
 
-    User.makeNewUser = function (signUpInfo) {
-        return $http({
-            method: 'POST',
-            url: '/api/user/',
-            data: {
-                user: signUpInfo
-            }
-        })
-        .then((res) => {
-            return {
-                email: res.data.email,
-                password: res.data.password
-            };
-        });
-    };
+  var transformToBody = function( res ) { return res.data };
 
-    User.getCurrentUser = function (user) {
-      return $http({
-        method: 'GET',
-        url: '/api/user/' + user._id
-      });
-    }
-    
-    return User;
-})
+  UserFactory.fetchAll = function() {
+
+    return $http.get('/api/user')
+    .then( transformToBody );
+
+  }
+
+  UserFactory.update = function( id, data ) {
+
+    return $http.put('/api/user/' + id, data)
+    .then( transformToBody );
+
+  }
+
+  UserFactory.delete = function( id ) {
+
+    return $http.delete('/api/user/' + id);
+
+  }
+
+  return UserFactory;
+
+});
