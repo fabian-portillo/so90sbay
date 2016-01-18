@@ -1,9 +1,9 @@
 // this module will prevent ui-router from working
-mod = angular.module('uiRouterNoop', [])
+describe('OrderFactory', function() {
+
+  mod = angular.module('uiRouterNoop', [])
     .service('$state', function() { return {} })
     .service('$urlRouter', function() { return {} })
-
-describe('OrderFactory', function() {
 
   beforeEach(module('FullstackGeneratedApp'));
   beforeEach(module('uiRouterNoop'));
