@@ -10,7 +10,7 @@
     </carousel>
     <div class="recommended-products">
         <h3>Recommended Products:</h3>
-        <div class="row-fluid product-grid" ng-repeat="product in products">
+        <div class="row-fluid product-grid" ng-repeat="product in products()">
             <div quicklook ng-mouseenter="options=true" ng-mouseleave="options=false" class="product-image-div quicklook-product">
                 <a ui-sref="productDetails({productId: product._id})">
                 <product-thumbnail product="product"></product-thumbnail>

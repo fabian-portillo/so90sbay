@@ -29,8 +29,10 @@ router.get('/:id', (req, res, next) => {
 	if (req.user) {
 		User.findById(req.user._id)
 			.then(function (user) {
-				user.recHistory.push(id);
-				user.save();
+				if (user.recHistory.indexOf(id) < 0) {
+					user.recHistory.push(id);
+					user.save()
+				}
 			})
 			.then(null, next);
 	}
