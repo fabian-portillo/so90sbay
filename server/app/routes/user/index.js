@@ -32,13 +32,18 @@ var adminOrSelfOnly = function( req, res, next ) {
 router.get('/', (req,res,next) => {
 	User.find({}).exec()
 	.then((users) => {
+		//Added a map function so that we are only returning users' emails and id
+		users = users.map(function (user) {
+			return {_id: user._id, email: user.email}
+		})
  		res.status(200).json(users);
  	})
  	.then(null, next)
 })
 
 router.get('/:id', (req,res) => {
-	res.status(200).json( req.foundUser );
+	//changed this so that it only sends back the email and id of the user
+	res.status(200).json( {_id: req.foundUser._id, email: req.foundUser.email} );
 })
 
 router.get('/:id/reviews', (req,res,next) => {
@@ -59,9 +64,10 @@ router.post('/', (req,res,next) => {
 })
 
 router.put('/:id', adminOrSelfOnly, (req,res,next) => {
+	if (req.body.isAdmin === true && req.user.isAdmin !== true) req.body.isAdmin = false;
 	var update = req.body;
 	var userId = req.params.id;
-	User.findByIdAndUpdate(userId, update)
+	User.findByIdAndUpdate(userId, update, {new: true})
 	.then((user) => {
 		return User.findOne(user._id)
 	})
