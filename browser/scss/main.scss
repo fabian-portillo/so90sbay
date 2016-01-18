@@ -3,7 +3,13 @@
 }
 
 body {
-  background: #fdfdfd;
+  /*background: #fdfdfd;*/
+  background-image: url('http://i.imgur.com/IBpByHX.jpg');
+  background-repeat: repeat;
+}
+
+.container {
+	background: white;
 }
 
 @mixin clearfix {
