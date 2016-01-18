@@ -1,9 +1,23 @@
+<!-- Single button -->
+<div class="btn-group orderBy-list" uib-dropdown is-open="status.isopen">
+    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+        Order By <span class="caret"></span>
+    </button>
+    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li ng-click="setOrder('title')" role="menuitem"><a href="#">A-Z</a></li>
+        <li ng-click="setOrder('price')" role="menuitem"><a href="#">Price: Low to High</a></li>
+        <li ng-click="setOrder('-price')" role="menuitem"><a href="#">Price: High to Low</a></li>
+    </ul>
+</div>
+<br>
 <div id='catalog'>
-	<div ng-repeat='product in products' class='items'>
-			<a ui-sref="productDetails({productId: product._id})">
-				<img src='{{product.photo[0]}}'>
-			</a>
-			<p><a ui-sref="productDetails({productId: product._id})">{{product.title}}</a></p>
-			<p class='price'> ${{ product.price}} </p>
-	</div>
+    <div ng-repeat='product in products | orderBy:currentOrder' class="product-grid row-fluid">
+        <div class='items'>
+            <a ui-sref="productDetails({productId: product._id})">
+                <img src='{{product.photo[0]}}'>
+            </a>
+            <p><a ui-sref="productDetails({productId: product._id})">{{product.title}}</a></p>
+            <p class='price'> ${{ product.price}} </p>
+        </div>
+    </div>
 </div>
