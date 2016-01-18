@@ -1,9 +1,10 @@
 #sidebar {
+  background: white;
   height: 100%;
   width: 250px;
-  position: absolute;
+  position: fixed;
   z-index: 200;
-  border: 2px solid black;
+  border-right: 1px solid black;
   h2 {
     margin-left: 10px;
   }
@@ -13,7 +14,7 @@
       list-style-type: none;
       margin: 20px 10px;
       :hover {
-        color: red;
+        color: $highlight-color;
       };
       a {
         text-decoration: none;

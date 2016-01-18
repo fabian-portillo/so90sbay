@@ -1,16 +1,16 @@
 <section id="home">
     <!-- CAROUSEL -->
-    <carousel interval="5000" no-wrap="noWrapSlides">
-        <slide ui-sref="{{slide.state}}" ng-repeat="slide in slides" active="slide.active" index="slide.id">
+    <uib-carousel interval="5000" no-wrap="noWrapSlides">
+        <uib-slide ui-sref="{{slide.state}}" ng-repeat="slide in slides" active="slide.active" index="slide.id">
             <div class="carousel-caption">
                 <p>{{slide.text}}</p>
             </div>
             <img class="slider-image" ng-src="{{slide.image}}">
-        </slide>
-    </carousel>
+        </uib-slide>
+    </uib-carousel>
     <div class="recommended-products">
         <h3>Recommended Products:</h3>
-        <div class="row-fluid product-grid" ng-repeat="product in products()">
+        <div class="row-fluid product-grid repeat-animation" ng-repeat="product in products">
             <div quicklook ng-mouseenter="options=true" ng-mouseleave="options=false" class="product-image-div quicklook-product">
                 <a ui-sref="productDetails({productId: product._id})">
                 <product-thumbnail product="product"></product-thumbnail>
@@ -18,24 +18,6 @@
                 <button ng-show="options" ng-controller="QuicklookModalCtrl" ng-click="open(product)" class="quicklook-button btn btn-lg btn-default">Quicklook</button>
             </div>
         </div>
-<!-- CAROUSEL -->
-<!-- 	<carousel interval="5000" no-wrap="noWrapSlides">
-		<slide ui-sref="{{slide.state}}" ng-repeat="slide in slides" active="slide.active" index="slide.id">
-			<div class="carousel-caption">
-         	 	<p>{{slide.text}}</p>
-    		</div>
-			<img class="slider-image" ng-src="{{slide.image}}">
-	    </slide>
-	 </carousel>
-	<h3 class="products-header">Recommended Products:</h3>
-	<div class="recommended-products">
-	<div class="row-fluid product-grid" ng-repeat="product in products">
-		<div class="product-image-div">
-		    <a ui-sref="productDetails({productId: product._id})">
-		    	<product-thumbnail product="product"></product-thumbnail>
-		    </a>
-	    </div>
-    </div> -->
 
     </div>
 </section>

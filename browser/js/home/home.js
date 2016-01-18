@@ -24,8 +24,11 @@ app.config(function ($stateProvider) {
                 }
             }
         },
-        controller: function ($scope, ProductFactory, allProducts, recProducts, Session) {
-            $scope.products = recProducts ? recProducts : allProducts;
+        controller: function ($scope, ProductFactory, allProducts, recProducts, Session, $timeout) {
+            $scope.products = [];
+            $timeout(function() {
+                $scope.products = recProducts ? recProducts : allProducts;
+            }, 1000);
             $scope.slides = [{image: 'http://i.imgur.com/vSt2W4A.png', state:'categoryList ({ category: "toys" })'}, {image: 'http://i.imgur.com/xrw9b3t.png', state:'categoryList ({ category: "video games" })'}];
         },
 
