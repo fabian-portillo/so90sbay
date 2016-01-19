@@ -14,4 +14,98 @@
       <td><button class="btn btn-xs btn-danger" href="#" ng-click="deleteLine( li )">x</button></td>
     </tr>
   </table>
+  <div class="container row" ng-show="!showCheckout">
+    <button class="checkout-btn btn btn-primary" ng-click="openCheckout()">Checkout</button>
+  </div>
+  <div class="container" ng-show="showCheckout">
+    <form class="checkout-form" name="checkoutForm">
+      <h3>Checkout</h3>
+      <div class="alert alert-danger" ng-show="error" role="alert">
+        {{ error }}
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-line-1">Street Address*</label>
+        </div>
+        <div class="col-xs-5 control-group">
+          <input type="text" class="form-control" name="address-line-1" ng-model="checkout.shipAddress" required>
+        </div>
+
+        <div class="col-xs-1">
+          <label for="credit-card-num">CC Num*</label>
+        </div>
+        <div class="col-xs-4">
+          <input type="text" class="form-control" name="credit-card-num" ng-model="checkout.creditCardNum" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-line-2">Address 2</label>
+        </div>
+        <div class="col-xs-5 control-group">
+          <input type="text" class="form-control" name="address-line-2" ng-model="checkout.shipAddress2">
+        </div>
+
+        <div class="col-xs-1">
+          <label for="credit-card-exp">Expires*</label>
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control" name="credit-card-exp" ng-model="checkout.creditCardExpiration" required>
+        </div>
+        <div class="col-xs-1">
+          <label for="credit-card-sec">Sec Num*</label>
+        </div>
+        <div class="col-xs-1">
+          <input type="text" class="form-control" name="credit-card-sec" ng-model="checkout.creditCardSecNum" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-city">City*</label>
+        </div>
+        <div class="col-xs-5 control-group">
+          <input type="text" class="form-control" name="address-city" ng-model="checkout.shipCity" required>
+        </div>
+
+        <div class="col-xs-1">
+          <label for="credit-card-name">Name*</label>
+        </div>
+        <div class="col-xs-4">
+          <input type="text" class="form-control" name="credit-card-name" ng-model="checkout.creditCardName" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-state">State*</label>
+        </div>
+        <div class="col-xs-1">
+          <input type="text" class="form-control" name="address-state" ng-model="checkout.shipState" required>
+        </div>
+
+        <div class="col-xs-1">
+          <label for="address-zip">Zip Code*</label>
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control" name="address-zip" ng-model="checkout.shipZip" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-phone">Phone Number*</label>
+        </div>
+        <div class="col-xs-5">
+          <input type="text" class="form-control" name="address-phone" ng-model="checkout.shipPhone" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <button type="submit" class="btn btn-primary" ng-click="finishCheckout( checkout )">Checkout</button>
+      </div>
+    </form>
+  </div>
 </div>

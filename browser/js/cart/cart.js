@@ -13,7 +13,7 @@ app.config( function ( $stateProvider ) {
 
   });
 
-}).controller( 'CartCtrl', function( $scope, cart, Cart ) {
+}).controller( 'CartCtrl', function( $scope, $state, cart, Cart ) {
 
   var refreshCart = function( newCart ) {
     $scope.cart = newCart;
@@ -29,6 +29,31 @@ app.config( function ( $stateProvider ) {
   $scope.deleteLine = function( line ) {
     Cart.remove( line.product )
     .then( refreshCart );
+  }
+
+  $scope.openCheckout = function() {
+    $scope.showCheckout = true;
+  }
+
+  $scope.finishCheckout = function() {
+
+    if ( !$scope.checkoutForm.$valid ) {
+      $scope.error = "Please fill out all required fields";
+    } else {
+
+      Cart.checkout( $scope.checkout )
+      .then( function( result ) {
+
+        if ( result.error ) {
+          $scope.error = result.error;
+        } else {
+          $state.go('home');
+        }
+
+      })
+
+    }
+
   }
 
 }).factory( 'Cart', function( $http ) {
@@ -98,6 +123,7 @@ app.config( function ( $stateProvider ) {
     return $http.post( '/api/orders/' + cachedCart._id, payInfo )
     .then( res => res.data )
     .then( function( finishedOrder ) {
+      cachedCart = null;
       return finishedOrder;
     })
     .then( null, function( err ) {
