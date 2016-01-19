@@ -10,8 +10,10 @@
     </ul>
 </div>
 <br>
+<div class="main-content-container">
 <div id='catalog'>
     <div ng-repeat='product in products | orderBy:currentOrder' class="product-grid row-fluid repeat-animation">
         <product-thumbnail product="product"></product-thumbnail>
     </div>
+</div>
 </div>

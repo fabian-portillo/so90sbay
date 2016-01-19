@@ -1,6 +1,6 @@
 <section id="home">
     <!-- CAROUSEL -->
-    <uib-carousel interval="5000" no-wrap="noWrapSlides">
+    <uib-carousel interval="3000" no-wrap="noWrapSlides">
         <uib-slide ui-sref="{{slide.state}}" ng-repeat="slide in slides" active="slide.active" index="slide.id">
             <div class="carousel-caption">
                 <p>{{slide.text}}</p>
@@ -8,9 +8,17 @@
             <img class="slider-image" ng-src="{{slide.image}}">
         </uib-slide>
     </uib-carousel>
-    <div class="recommended-products">
-        <h3>Recommended Products:</h3>
-        <div class="row-fluid product-grid repeat-animation" ng-repeat="product in products">
+
+    <div class="main-content-container">
+        <h3>Recommended For You:</h3>
+        <div class="recommended-products">
+            <div class="row-fluid product-grid repeat-animation" ng-repeat="product in products">
+               <product-thumbnail product="product"></product-thumbnail>
+            </div>
+
+    <div class="recommended-products" ng-show="!!recentlyViewed">    
+        <h3>Recently viewed</h3>
+        <div class="row-fluid product-grid repeat-animation" ng-repeat="product in recentlyViewed">
            <product-thumbnail product="product"></product-thumbnail>
         </div>
     </div>

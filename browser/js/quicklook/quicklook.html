@@ -1,5 +1,5 @@
 <div class="quicklook-modal">
-    <product-thumbnail ng-click="close()" ui-sref="productDetails({productId: product._id})" product="product" class="product-modal-photo"></product-thumbnail>
+    <img ng-src="{{product.photo[0]}}" ng-click="close()" ui-sref="productDetails({productId: product._id})" product="product" class="product-thumbnail product-modal-photo">
     <div class="product-modal-details">
 	    <h3 ng-click="close()" ui-sref="productDetails({productId: product._id})">{{product.title}}</h3>
 	    <h4 >{{product.price | currency}}</h4>
