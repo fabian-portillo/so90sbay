@@ -1,0 +1,57 @@
+<div id="order-details" class="user-panel">
+  <h3>Order Placed on {{ order.paid | date }}</h3>
+  <table>
+    <tr>
+      <th>Date Created:</th>
+      <td>{{ order.created | date }}</td>
+      <th>Date Finalized:</th>
+      <td>{{ order.paid | date }}</td>
+    </tr>
+
+    <tr>
+      <th>Ship To:</th>
+      <td>{{ order.paymentInfo.shipAddress }}</td>
+      <th>Payment Info:</th>
+      <td>Credit Card ending in {{ order.paymentInfo.creditCardNum.slice( -4 ) }}</td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td>{{ order.paymentInfo.shipAddress2 }}</td>
+      <td></td>
+      <td>{{ order.paymentInfo.creditCardName }}</td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td>{{ order.paymentInfo.shipCity }}, {{ order.paymentInfo.shipState }} {{ order.paymentInfo.shipZip }}</td>
+      <th>Total Paid:</th>
+      <td>${{ total | number: 2 }}</td>
+    </tr>
+
+    <tr>
+      <th>Phone Number:</th>
+      <td>{{ order.paymentInfo.shipPhone }}</td>
+      <th>Order Status:</th>
+      <td>{{ order.paymentInfo.status }}</td>
+    </tr>
+    
+    <tr>
+      <th colspan="4">Items Purchased:</th>
+    </tr>
+
+    <tr ng-repeat="li in order.lineItems">
+      <td>{{ li.quantity }} x</td>
+      <td colspan="2">
+        <a ui-sref="productDetails({ productId: li.product._id })">{{ li.product.title }}</a>
+      </td>
+      <td>${{ li.quantity * li.price | number: 2 }}</td>
+    </tr>
+
+    <tr>
+      <td colspan="2"></td>
+      <th>Total:</th>
+      <td>${{ total | number: 2 }}</td>
+    </tr>
+  </table>
+</div>

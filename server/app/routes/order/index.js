@@ -19,7 +19,7 @@ router.param('id', function ( req, res, next, id ) {
 
   if ( !req.user ) return res.status( 401 ).end();
 
-  Order.findById( id )
+  Order.findById( id ).populate('paymentInfo')
   .then( function( order ) {
 
     if ( order === null ) return res.status( 404 ).end();
@@ -40,7 +40,9 @@ router.param('id', function ( req, res, next, id ) {
             _id: order._id,
             user: order.user,
             paymentInfo: order.paymentInfo,
-            lineItems: lis
+            lineItems: lis,
+            paid: order.paid,
+            created: order.created
           };
 
           next();
