@@ -16,6 +16,7 @@ app.factory( 'UserFactory', function( $http, ProductFactory, $q ) {
 
     return $http.get('/api/user/' + id)
       .then(function (user) {
+        if (user.data.recHistory.length === 0) throw Error();
         return user.data.recHistory.reduce(function (prev, current) {
           if (prev.indexOf(current) < 0) {
             prev.push(current);
@@ -34,6 +35,9 @@ app.factory( 'UserFactory', function( $http, ProductFactory, $q ) {
       .then(function (productsArray) {
         angular.copy(productsArray, cachedRecHistory);
         return cachedRecHistory;
+      })
+      .then(null, function (err) {
+        return null;
       })
   }
 
