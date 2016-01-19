@@ -3,7 +3,7 @@ app.directive('sidebar', function (SidebarFactory) {
     restrict: 'E',
     scope: {},
     templateUrl: '/js/common/directives/sidebar/sidebar.html',
-    link: function (scope, element, attrs) {
+    link: function (scope) {
 
       scope.categories = [
         { label: 'Toys', state: 'toys' },

@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 module.exports = router;
 require('../../../db/models');
 var Review = mongoose.model('Review');
-var _ = require('lodash');
 
 
 router.get('/', function (req, res, next) {

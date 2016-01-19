@@ -45,7 +45,6 @@ router.get('/:id', (req, res, next) => {
 	.then(null, next);
 })
 
-// temporarily commented out bc Review model not yet hooked up to Products
 router.get('/:id/reviews', (req, res, next) => {
 	var id = req.params.id;
 	Review.find({product: id})

@@ -3,6 +3,7 @@ module.exports = router;
 var mongoose = require('mongoose');
 
 var Order = mongoose.model( 'Order' );
+var User = mongoose.model( 'User' );
 
 var adminOnly = function( req, res, next ) {
 
@@ -48,7 +49,6 @@ router.param('id', function ( req, res, next, id ) {
 
       } else {
 
-        console.log("FUCK YOU BITCH")
         req.order = order;
         next();
 
@@ -75,6 +75,54 @@ router.get('/', adminOnly, function ( req, res, next ) {
 
 router.get('/:id', function ( req, res ) {
   res.status(200).json( req.order );
+});
+
+router.post('/:id', function ( req, res, next ) {
+
+  if ( req.order.paymentInfo && !req.user.isAdmin ) {
+
+    var err = new Error( "Order has already been paid" );
+    err.status = 400;
+    return next( err );
+
+  }
+
+  Order.PaymentInfo.create( req.body )
+  .then( function( payInfo ) {
+
+    console.log( payInfo );
+    return Order.findByIdAndUpdate( req.order._id, {
+      $set: {
+        paymentInfo: payInfo,
+        paid: Date.now()
+      }
+    }, { new: true } )
+    .then( function( savedOrder ) {
+
+      savedOrder.paymentInfo = payInfo;
+      res.status(200).json( savedOrder );
+
+    });
+
+  })
+  .then( function() {
+
+    // if this order was the cart, detach it
+    if ( req.session.cart && req.session.cart._id.toString() === req.order._id.toString() ) {
+
+      req.session.cart = null;
+
+      if ( req.user.cart ) {
+        return User.findByIdAndUpdate( req.user._id, { cart: null } );
+      }
+
+      console.log( "User cart cleared by checkout" );
+
+    }
+
+  })
+  .then( null, next );
+
 });
 
 router.delete('/:id', adminOnly, function ( req, res, next ) {
