@@ -1,10 +1,13 @@
-app.controller('QuicklookModalCtrl', function ($scope, $uibModal, $log) {
+app.controller('QuicklookModalCtrl', function ($scope, $uibModal) {
 
   $scope.animationsEnabled = true;
 
   $scope.open = function (product) {
 
-    var modalInstance = $uibModal.open({
+
+//THIS IS SHOWING UP IN THE LINTER AS BEING DEFINED BUT NEVER USED
+//DO WE NEED THIS????
+  $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'js/quicklook/quicklook.html',
       controller: 'ModalInstanceCtrl',
