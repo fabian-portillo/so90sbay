@@ -19,7 +19,7 @@ app.config( function ( $stateProvider ) {
 
   });
 
-}).controller( 'ProductDetailCtrl', function( $scope, product, userId, reviews, Cart, ReviewFactory, ProductFactory, AuthService ) {
+}).controller( 'ProductDetailCtrl', function( $scope, product, userId, reviews, Cart, ReviewFactory ) {
 
   $scope.product = product;
   $scope.product.reviews = reviews;
@@ -88,7 +88,7 @@ app.config( function ( $stateProvider ) {
 
   $scope.addReview = function () {
     ReviewFactory.addReview($scope.newReview)
-    .then(function(review) {
+    .then(function() {
       $scope.newReview = {
         title: null,
         body: null,

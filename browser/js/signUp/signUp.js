@@ -12,7 +12,7 @@ app.controller('SignUpCtrl', function ($scope, $state, AuthService, SignUpFactor
 
     $scope.makeNewUser = function (signUpInfo) {
         return SignUpFactory.makeNewUser(signUpInfo)
-            .then(function (user) {
+            .then(function () {
                 $state.go('login');
             }).catch(function () {
                 $scope.error = 'SignUp Failed';
