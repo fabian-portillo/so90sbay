@@ -9,10 +9,22 @@ body {
   background: #fdfdfd;
   background-image: url('http://i.imgur.com/4dgIUuc.jpg');
   background-image: repeat;
+  position: relative;
+  margin-bottom: 50px;
 }
 
 .container {
 	background: white;
+}
+
+.main-content-container {
+  width: 90%;
+  margin: 0 auto 40px;
+  background: white;
+  min-height: 800px;
+  h3 {
+    padding: 20px 80px;
+  }
 }
 
 @mixin clearfix {

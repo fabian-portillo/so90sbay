@@ -1,11 +1,8 @@
 <div class="footer">
     <div class="container">
-        <ul class="nav navbar-nav">
-            <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
-            </li>
-            <li><a href="http://www.warnerbros.com/archive/spacejam/movie/jam.htm">Welcome to the Jam</a></li>
-            <li><a>Made at Fullstack Academy © 1999</a></li>
-        </ul>
+    		<a ui-sref="home"><img src="http://i.imgur.com/blKeoPX.png"></a>
+            <a ui-sref-active="active" ui-sref="gifs"><p>Terms and Conditions</p></a>
+            <a href="http://www.warnerbros.com/archive/spacejam/movie/jam.htm"><p>Welcome to the Jam</p></a>
+            <a><p>Made at Fullstack Academy © 1999</p></a>
     </div>
 </div>
