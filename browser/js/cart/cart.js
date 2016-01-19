@@ -36,7 +36,9 @@ app.config( function ( $stateProvider ) {
   var CartFactory = {};
   var cachedCart = null;
 
-  CartFactory.fetch = function() {
+  CartFactory.fetch = function( force ) {
+
+    if ( cachedCart && !force ) return cachedCart;
 
     return $http.get( '/api/cart' ).then( res => res.data )
     .then( function( cart ) {
@@ -55,7 +57,7 @@ app.config( function ( $stateProvider ) {
 
     return $http.post( '/api/cart', data )
     .then( function() {
-      return CartFactory.fetch();
+      return CartFactory.fetch( true );
     });
 
   }
@@ -73,7 +75,7 @@ app.config( function ( $stateProvider ) {
       data: data 
     })
     .then( function() {
-      return CartFactory.fetch();
+      return CartFactory.fetch( true );
     });
 
   }
@@ -84,7 +86,22 @@ app.config( function ( $stateProvider ) {
 
     return $http.delete( '/api/cart/' + productId )
     .then( function() {
-      return CartFactory.fetch();
+      return CartFactory.fetch( true );
+    });
+
+  }
+
+  CartFactory.checkout = function( payInfo ) {
+
+    if ( cachedCart.paymentInfo ) return;
+
+    return $http.post( '/api/orders/' + cachedCart._id, payInfo )
+    .then( res => res.data )
+    .then( function( finishedOrder ) {
+      return finishedOrder;
+    })
+    .then( null, function( err ) {
+      return { error: err };
     });
 
   }
