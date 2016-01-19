@@ -6,13 +6,17 @@ app.config(function ($stateProvider) {
             allProducts: function (ProductFactory) {
                 return ProductFactory.getAllProducts();
             },
-            recProducts: function (UserFactory, Session) {
-                if (Session.user) {
-                    return UserFactory.getRecHistory(Session.user._id);
-                }
+            recProducts: function (UserFactory, AuthService) {
+                return AuthService.getLoggedInUser().then(function (user) {
+                    if (user) {
+                        return UserFactory.getRecHistory(user._id);
+                    } else {
+                        return;
+                    }
+                })
             }
         },
-        controller: function ($scope, ProductFactory, allProducts, recProducts, Session, $timeout) {
+        controller: function ($scope, ProductFactory, allProducts, recProducts, $timeout) {
             $scope.products = [];
             $timeout(function() {
                 $scope.products = recProducts ? recProducts : allProducts;
