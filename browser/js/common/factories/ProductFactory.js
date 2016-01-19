@@ -1,6 +1,5 @@
-app.factory('ProductFactory', function ($http, Session) {
+app.factory('ProductFactory', function ($http) {
     var factory = {};
-    var recProducts = [];
 
     factory.getAllProducts = function() {
         return $http({
