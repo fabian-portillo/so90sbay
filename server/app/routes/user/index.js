@@ -43,7 +43,7 @@ router.get('/', (req,res,next) => {
 
 router.get('/:id', (req,res) => {
 	//changed this so that it only sends back the email and id of the user
-	res.status(200).json( {_id: req.foundUser._id, email: req.foundUser.email} );
+	res.status(200).json( {_id: req.foundUser._id, email: req.foundUser.email, recHistory: req.foundUser.recHistory} );
 })
 
 router.get('/:id/reviews', (req,res,next) => {
