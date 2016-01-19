@@ -19,7 +19,7 @@ app.config( function ( $stateProvider ) {
 
   });
 
-}).controller( 'ProductDetailCtrl', function( $scope, product, userId, reviews, Cart, ReviewFactory ) {
+}).controller( 'ProductDetailCtrl', function ( $scope, product, userId, reviews, Cart, ReviewFactory, ProductFactory, AuthService, $rootScope ) {
 
   $scope.product = product;
   $scope.product.reviews = reviews;
@@ -86,6 +86,14 @@ app.config( function ( $stateProvider ) {
     five: 5
   };
 
+  $rootScope.$on('reviewsUpdated', function () {
+      ProductFactory.getProductReviews($scope.product._id)
+      .then(function(newReviews){
+        $scope.product.reviews = newReviews;
+      });
+       
+    });
+
   $scope.addReview = function () {
     ReviewFactory.addReview($scope.newReview)
     .then(function() {
@@ -98,6 +106,7 @@ app.config( function ( $stateProvider ) {
       };
       $scope.newReviewForm.$setPristine();
       $scope.newReviewForm.$setUntouched();
+      $scope.hideForm();
     });
 
   }
