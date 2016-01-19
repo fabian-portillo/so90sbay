@@ -13,13 +13,23 @@ app.config(function ($stateProvider) {
                     } else {
                         return;
                     }
-                })
+                });
+            },
+            similarProducts: function (ProductFactory, recProducts) {
+                if (recProducts) {
+                    return ProductFactory.getMultipleCats(recProducts[recProducts.length - 1].category);
+                }
             }
         },
-        controller: function ($scope, ProductFactory, allProducts, recProducts, $timeout) {
+        controller: function ($scope, ProductFactory, allProducts, recProducts, $timeout, similarProducts) {
             $scope.products = [];
             $timeout(function() {
-                $scope.products = recProducts ? recProducts : allProducts;
+                if (recProducts) {
+                    $scope.recentlyViewed = recProducts.slice(-4);
+                    $scope.products = similarProducts;
+                } else {
+                    $scope.products = allProducts;
+                }
             }, 1000);
             $scope.slides = [{image: 'http://i.imgur.com/vSt2W4A.png', state:'categoryList ({ category: "toys" })'}, {image: 'http://i.imgur.com/xrw9b3t.png', state:'categoryList ({ category: "video games" })'}];
         },

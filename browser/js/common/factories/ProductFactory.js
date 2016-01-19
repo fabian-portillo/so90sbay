@@ -1,5 +1,6 @@
-app.factory('ProductFactory', function ($http) {
+app.factory('ProductFactory', function ($http, $q) {
     var factory = {};
+    var cachedSimilarCats = [];
 
     factory.getAllProducts = function() {
         return $http({
@@ -39,6 +40,17 @@ app.factory('ProductFactory', function ($http) {
         .then(function(response) {
             return response.data;
         })
+    }
+
+    factory.getMultipleCats = function(array) {
+        var promisifiedCats = array.map(function (cat) {
+            return factory.getProductCategories(cat);
+        });
+        return $q.all(promisifiedCats)
+            .then(function (products) {
+                angular.copy(products[0], cachedSimilarCats)
+                return cachedSimilarCats;
+            });
     }
 
     factory.createNewProduct = function(newProduct) {
