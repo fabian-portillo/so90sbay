@@ -63,7 +63,6 @@ router.use( '/', function( req, res, next ) {
 
         return Promise.all( lis.map( function( li_obj ) {
           if ( li_obj === null ) return null;
-          console.log( "the product:", li_obj.product );
           return Product.findById( li_obj.product ).exec();
         }))
         .then( function( prods ) {
@@ -73,7 +72,6 @@ router.use( '/', function( req, res, next ) {
             var product = prods[li_idx];
 
             if ( ( product ) === null ) {
-              console.error( "Could not find product in cart:", li_obj.product );
               return li_obj;
             }
 
@@ -89,7 +87,6 @@ router.use( '/', function( req, res, next ) {
       .then( function( lis ) {
 
         req.session.cart.lineItems = lis;
-        console.log( req.session.cart )
         next();
 
       })

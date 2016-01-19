@@ -76,6 +76,33 @@ router.get('/:id', function ( req, res ) {
   res.status(200).json( req.order );
 });
 
+router.post('/:id', function ( req, res, next ) {
+
+  if ( req.order.paymentInfo && !req.user.isAdmin ) {
+
+    var err = new Error( "Order has already been paid" );
+    err.status = 400;
+    return next( err );
+
+  }
+
+  Order.PaymentInfo.create( req.body )
+  .then( function( payInfo ) {
+
+    req.order.paymentInfo = payInfo;
+    req.order.paid = Date.now();
+    return req.order.save();
+
+  })
+  .then( function( savedOrder ) {
+
+    res.status(200).json( savedOrder );
+
+  })
+  .then( null, next );
+
+});
+
 router.delete('/:id', adminOnly, function ( req, res, next ) {
 
   req.order.remove()

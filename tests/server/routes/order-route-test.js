@@ -43,6 +43,81 @@ describe('Order Route', function () {
 
     });
 
-  });
+    describe('POST route', function() {
 
+      var mockPayInfo = {
+        shipAddress: "123 Fake Street",
+        shipCity: "New York",
+        shipState: "NY",
+        shipZip: "10000",
+        shipPhone: "123 456 7890",
+        creditCardNum: "1234 5678 9000 0000",
+        creditCardExpiration: "12/60",
+        creditCardName: "John Doe",
+        creditCardSecNum: "123"
+      }
+
+      var userCreds = {
+        email: 'obama@gmail.com',
+        password: 'potus'
+      }
+      var createdUser;
+      beforeEach('create user', function(done) {
+
+        User.create( userCreds )
+        .then( function( cu ) {
+          createdUser = cu;
+          done();
+        })
+        .then( null, done );
+
+      });
+
+      it('can be paid via the post route', function (done) {
+
+        Order.create({ user: createdUser._id })
+        .then( function( order ) {
+
+          agent.post('/login').send(userCreds)
+            .end( function( err, res ) {
+              if (err) return done(err);
+
+              agent.post('/api/orders/' + order._id).send( mockPayInfo )
+                .expect( 200 )
+                .end( function( err, res ) {
+                  if (err) return done(err);
+
+                  expect( Date.parse( res.body.paid ) ).to.be.closeTo( Date.now(), 100 );
+                  expect( res.body.paymentInfo.status ).to.equal( "Pending" );
+
+                  done();
+
+                });
+            });
+        });
+      });
+
+      it('can\'t be paid twice', function (done) {
+
+        Order.create({ user: createdUser._id })
+        .then( function( order ) {
+
+          agent.post('/login').send(userCreds)
+            .end( function( err, res ) {
+              if (err) return done(err);
+
+              agent.post('/api/orders/' + order._id).send( mockPayInfo )
+                .expect( 200 )
+                .end( function( err, res ) {
+                  if (err) return done(err);
+
+                  agent.post('/api/orders/' + order._id).send({})
+                    .expect( 400, done );
+
+                });
+            });
+        });
+      });
+    });
+  });
 });

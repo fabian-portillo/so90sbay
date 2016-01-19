@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 
 var User = mongoose.model( 'User' );
 var Review = mongoose.model( 'Review' );
+var Order = mongoose.model( 'Order' );
 
 router.param('id', function ( req, res, next, id ) {
 
@@ -53,6 +54,24 @@ router.get('/:id/reviews', (req,res,next) => {
 	})
  	.then(null, next)
 })
+
+router.get('/:id/orders', function (req, res, next) {
+
+	if ( req.foundUser._id.toString() !== req.user._id.toString() && !req.user.isAdmin ) {
+
+		var err = new Error( "Cannot view another user's order history" );
+		err.status = 401;
+		return next( err );
+
+	}
+
+	Order.find({user: req.foundUser._id}).exec()
+	.then( function (orders) {
+		res.status(200).json(orders);
+	})
+	.then( null, next );
+
+});
 
 router.post('/', (req,res,next) => {
 	var newUser = req.body.user;
