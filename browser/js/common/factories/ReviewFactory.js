@@ -1,4 +1,4 @@
-app.factory('ReviewFactory', function ($http) {
+app.factory('ReviewFactory', function ($http, $rootScope) {
 	var factory = {};
 
 	factory.addReview = (newReview) => {
@@ -8,8 +8,12 @@ app.factory('ReviewFactory', function ($http) {
 			data: newReview
 		})
 		.then((response)=> {
+			//trigger loader through product-detailsCTRL
+			$rootScope.$broadcast('reviewsUpdated', newReview);
+
 			return response.data;
 		})
+		
 	}
 	return factory;
 })
