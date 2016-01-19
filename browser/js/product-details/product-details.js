@@ -99,9 +99,7 @@ app.config( function ( $stateProvider ) {
       $scope.newReviewForm.$setPristine();
       $scope.newReviewForm.$setUntouched();
     });
-
   }
-
-
+  
 
 });
