@@ -17,6 +17,9 @@ var mongoose = require('mongoose');
         },
         product: {
             type: mongoose.Schema.Types.ObjectId, ref: "Product"
+        },
+        dateCreated: {
+            type: Date, default: Date.now
         }
     });
 
