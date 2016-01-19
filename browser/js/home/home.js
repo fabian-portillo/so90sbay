@@ -6,21 +6,9 @@ app.config(function ($stateProvider) {
             allProducts: function (ProductFactory) {
                 return ProductFactory.getAllProducts();
             },
-            recProducts: function (ProductFactory, Session, $q) {
-                var productsToReturn
-                if (Session.user) {    
-                    var promisifiedProducts = Session.user.recHistory.map(function (id) {
-                        return ProductFactory.getProductById(id);
-                    });
-                    return $q.all(promisifiedProducts)
-                        .then(function (arrayOfAllProducts) {
-                            productsToReturn = arrayOfAllProducts;
-                        })
-                        .then(function () {
-                            return function () {
-                                return productsToReturn;
-                            }
-                        })
+            recProducts: function (UserFactory, Session) {
+                if (Session.user) {
+                    return UserFactory.getRecHistory(Session.user._id);
                 }
             }
         },
