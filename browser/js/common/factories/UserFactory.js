@@ -41,6 +41,13 @@ app.factory( 'UserFactory', function( $http, ProductFactory, $q ) {
       })
   }
 
+  UserFactory.getEmail = function (id) {
+    return $http.get('/api/user/' + id)
+    .then(function(user) {
+      return user.data.email;
+    })
+  }
+
   UserFactory.update = function( id, data ) {
 
     return $http.put('/api/user/' + id, data)
