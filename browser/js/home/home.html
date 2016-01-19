@@ -8,10 +8,12 @@
             <img class="slider-image" ng-src="{{slide.image}}">
         </uib-slide>
     </uib-carousel>
-    <div class="recommended-products">
-        <h3>Recommended Products:</h3>
-        <div class="row-fluid product-grid repeat-animation" ng-repeat="product in products">
-           <product-thumbnail product="product"></product-thumbnail>
+    <div class="main-content-container">
+        <h3>Recommended For You:</h3>
+        <div class="recommended-products">
+            <div class="row-fluid product-grid repeat-animation" ng-repeat="product in products">
+               <product-thumbnail product="product"></product-thumbnail>
+            </div>
         </div>
     </div>
 </section>

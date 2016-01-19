@@ -1,4 +1,4 @@
-app.directive('productList', function (ProductFactory) {
+app.directive('productList', function () {
 	return {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/product-list/product-list.html',

@@ -2,7 +2,32 @@ h2 {
   text-align: center;
 }
 
+.login-or {
+	text-align: center;
+}
+
+.oAuth {
+  width: 60%;
+  margin: 10px auto;
+  button {
+    margin: 10px auto;
+    width: 100%;
+  }
+}
+
+
 #login-form {
   width: 60%;
   margin: 10px auto;
+}
+
+.login-signup-container {
+	background: white;
+	width: 60%;
+	margin: 50px auto;
+	padding: 20px 0;
+	border-radius: 25px;
+	border-color: #2BE3FF;
+	border-style: solid;
+	border-width: 2px;
 }
