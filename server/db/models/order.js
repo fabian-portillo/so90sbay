@@ -47,6 +47,41 @@ var PaymentInfoSchema = new mongoose.Schema({
   shipAddress : {
             type: String,
             required: true
+  },
+  shipAddress2 : {
+            type: String,
+  },
+  shipCity : {
+            type: String,
+            required: true
+  },
+  shipState : {
+            type: String,
+            required: true
+  },
+  shipZip : {
+            type: String,
+            required: true
+  },
+  shipPhone: {
+            type: String,
+            required: true
+  },
+  creditCardNum: {
+            type: String,
+            required: true
+  },
+  creditCardExpiration: {
+            type: String,
+            required: true
+  },
+  creditCardName: {
+            type: String,
+            required: true
+  },
+  creditCardSecNum: {
+            type: String,
+            required: true
   }
 
 });
@@ -64,6 +99,14 @@ var OrderSchema = new mongoose.Schema({
   paymentInfo : {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'PaymentInfo',
+            default: null
+  },
+  created : {
+            type: Date,
+            default: Date.now
+  },
+  paid : {
+            type: Date,
             default: null
   }
 
