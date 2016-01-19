@@ -48,7 +48,6 @@ router.param('id', function ( req, res, next, id ) {
 
       } else {
 
-        console.log("FUCK YOU BITCH")
         req.order = order;
         next();
 
