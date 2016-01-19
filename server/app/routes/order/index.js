@@ -89,14 +89,35 @@ router.post('/:id', function ( req, res, next ) {
   Order.PaymentInfo.create( req.body )
   .then( function( payInfo ) {
 
-    req.order.paymentInfo = payInfo;
-    req.order.paid = Date.now();
-    return req.order.save();
+    console.log( payInfo );
+    return Order.findByIdAndUpdate( req.order._id, {
+      $set: {
+        paymentInfo: payInfo,
+        paid: Date.now()
+      }
+    }, { new: true } )
+    .then( function( savedOrder ) {
+
+      savedOrder.paymentInfo = payInfo;
+      res.status(200).json( savedOrder );
+
+    });
 
   })
-  .then( function( savedOrder ) {
+  .then( function() {
 
-    res.status(200).json( savedOrder );
+    // if this order was the cart, detach it
+    if ( req.session.cart && req.session.cart._id.toString() === req.order._id.toString() ) {
+
+      req.session.cart = null;
+
+      if ( req.user.cart ) {
+        return User.findByIdAndUpdate( req.user._id, { cart: null } );
+      }
+
+      console.log( "User cart cleared by checkout" );
+
+    }
 
   })
   .then( null, next );

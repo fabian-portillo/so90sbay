@@ -87,7 +87,7 @@ describe('Order Route', function () {
                 .end( function( err, res ) {
                   if (err) return done(err);
 
-                  expect( Date.parse( res.body.paid ) ).to.be.closeTo( Date.now(), 100 );
+                  expect( Date.parse( res.body.paid ) ).to.be.closeTo( Date.now(), 1000 );
                   expect( res.body.paymentInfo.status ).to.equal( "Pending" );
 
                   done();

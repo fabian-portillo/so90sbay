@@ -5,6 +5,23 @@ var _ = require( 'lodash' );
 var Order = mongoose.model( 'Order' );
 var Product = mongoose.model( 'Product' );
 
+function createNewCart( session, user ) {
+
+  console.log( "Creating new cart for session. . ." );
+  session.cart = new Order({});
+  if ( user ) session.cart.user = user._id;
+
+  // save the cart to the database
+  return session.cart.save()
+  .then( function( cart ) {
+
+    console.log( "Cart created successfully!" );
+    return cart;
+
+  });
+
+}
+
 // attach the user's cart to the request
 router.use( '/', function( req, res, next ) {
 
@@ -19,85 +36,147 @@ router.use( '/', function( req, res, next ) {
       Order.findById( req.user.cart ).exec()
       .then( function( cart ) {
 
-        req.session.cart = cart;
-        next();
+        if ( cart.paymentInfo ) {
+
+          createNewCart( req.session, req.user )
+          .then( function( cart ) {
+
+            if ( authed ) {
+              req.user.cart = cart._id;
+
+              return req.user.save();
+            }
+
+          })
+          .then( function() { next(); })
+          .then( null, next );
+
+        } else { 
+
+          req.session.cart = cart;
+          next();
+
+        }
       
       }, next );
 
     } else {
 
       // create a new cart for this session
-      console.log( "Creating new cart for session. . ." );
-      req.session.cart = new Order({});
-      if ( authed ) req.session.cart.user = req.user._id;
-
-      // save the cart to the database
-      req.session.cart.save()
+      createNewCart( req.session, req.user )
       .then( function( cart ) {
 
-        console.log( "Cart created successfully!" );
-        // if a user is signed in, persist the cart on their object
         if ( authed ) {
-
           req.user.cart = cart._id;
 
-          req.user.save()
-          .then( function() { next(); }, next );
+          return req.user.save();
+        }
 
-        } else {
-          next();
-        } 
-
-      }, next );
+      })
+      .then( function() { next(); })
+      .then( null, next );
 
     }
   } else {
 
-    // make sure the line items are populated
-    if ( req.session.cart.lineItems && req.session.cart.lineItems.length ) {
+    return new Promise( function( ok, fail ) {
 
-      return Promise.all( req.session.cart.lineItems.map( function( li_id ) {
-        return Order.LineItem.findById( li_id ).exec();
-      }))
-      .then( function( lis ) {
+      if ( req.session.cart.constructor !== Order ) {
 
-        return Promise.all( lis.map( function( li_obj ) {
-          if ( li_obj === null ) return null;
-          return Product.findById( li_obj.product ).exec();
+        Order.findById( req.session.cart._id )
+        .then( function( cart ) {
+
+          req.session.cart.paymentInfo = cart.paymentInfo;
+          req.session.cart.lineItems = cart.lineItems;
+          req.session.cart.created = cart.created;
+          req.session.cart.paid = cart.paid;
+
+          return req.session.cart;
+
+        })
+        .then( ok, fail );
+
+      } else {
+
+        ok( req.session.cart );
+
+      }
+
+    })
+    .then( function( cart ) {
+
+      req.session.cart = cart;
+
+      if ( cart.paymentInfo !== null ) {
+
+        return createNewCart( req.session, req.user )
+        .then( function( cart ) {
+
+          if ( authed ) {
+            req.user.cart = cart._id;
+
+            return req.user.save();
+          }
+
+        })
+        .then( function() { next(); })
+        .then( null, next );
+
+      } else {
+
+        return cart;
+
+      }
+
+    })
+    .then( function( cart ) {
+
+      console.dir( cart.lineItems );
+      // make sure the line items are populated
+      if ( cart.lineItems && cart.lineItems.length ) {
+
+        return Promise.all( cart.lineItems.map( function( li_id ) {
+          return Order.LineItem.findById( li_id ).exec();
         }))
-        .then( function( prods ) {
+        .then( function( lis ) {
 
-          return lis.map( function( li_obj, li_idx ) {
+          return Promise.all( lis.map( function( li_obj ) {
+            if ( li_obj === null ) return null;
+            return Product.findById( li_obj.product ).exec();
+          }))
+          .then( function( prods ) {
 
-            var product = prods[li_idx];
+            return lis.map( function( li_obj, li_idx ) {
 
-            if ( ( product ) === null ) {
+              var product = prods[li_idx];
+
+              if ( ( product ) === null ) {
+                return li_obj;
+              }
+
+              li_obj.product = prods[li_idx];
               return li_obj;
-            }
 
-            li_obj.product = prods[li_idx];
-            return li_obj;
+            })
 
           })
+          .then( null, next );
+
+        })
+        .then( function( lis ) {
+
+          cart.lineItems = lis;
+          next();
 
         })
         .then( null, next );
-
-      })
-      .then( function( lis ) {
-
-        req.session.cart.lineItems = lis;
+      
+      } else {
         next();
-
-      })
-      .then( null, next );
-    
-    } else {
-      next();
-    }
-
+      }
+    })
+    .then( null, next );
   }
-
 });
 
 // GET /cart/ - gets the current session's cart
