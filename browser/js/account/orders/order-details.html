@@ -26,7 +26,7 @@
       <td></td>
       <td>{{ order.paymentInfo.shipCity }}, {{ order.paymentInfo.shipState }} {{ order.paymentInfo.shipZip }}</td>
       <th>Total Paid:</th>
-      <td>${{ total }}</td>
+      <td>${{ total | number: 2 }}</td>
     </tr>
 
     <tr>
@@ -45,13 +45,13 @@
       <td colspan="2">
         <a ui-sref="productDetails({ productId: li.product._id })">{{ li.product.title }}</a>
       </td>
-      <td>${{ li.quantity * li.price }}</td>
+      <td>${{ li.quantity * li.price | number: 2 }}</td>
     </tr>
 
     <tr>
       <td colspan="2"></td>
       <th>Total:</th>
-      <td>${{ total }}</td>
+      <td>${{ total | number: 2 }}</td>
     </tr>
   </table>
 </div>
