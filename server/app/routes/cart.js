@@ -34,15 +34,15 @@ router.use( '/', function( req, res, next ) {
       
       // find the user's cart and attach it to the session
       Order.findById( req.user.cart ).exec()
-      .then( function( cart ) {
+      .then( function( userCart ) {
 
-        if ( cart.paymentInfo ) {
+        if ( userCart.paymentInfo ) {
 
           createNewCart( req.session, req.user )
-          .then( function( cart ) {
+          .then( function( newCart ) {
 
             if ( authed ) {
-              req.user.cart = cart._id;
+              req.user.cart = newCart._id;
 
               return req.user.save();
             }
@@ -53,7 +53,7 @@ router.use( '/', function( req, res, next ) {
 
         } else { 
 
-          req.session.cart = cart;
+          req.session.cart = userCart;
           next();
 
         }
@@ -64,10 +64,10 @@ router.use( '/', function( req, res, next ) {
 
       // create a new cart for this session
       createNewCart( req.session, req.user )
-      .then( function( cart ) {
+      .then( function( newCart ) {
 
         if ( authed ) {
-          req.user.cart = cart._id;
+          req.user.cart = newCart._id;
 
           return req.user.save();
         }
@@ -84,12 +84,12 @@ router.use( '/', function( req, res, next ) {
       if ( req.session.cart.constructor !== Order ) {
 
         Order.findById( req.session.cart._id )
-        .then( function( cart ) {
+        .then( function( realCart ) {
 
-          req.session.cart.paymentInfo = cart.paymentInfo;
-          req.session.cart.lineItems = cart.lineItems;
-          req.session.cart.created = cart.created;
-          req.session.cart.paid = cart.paid;
+          req.session.cart.paymentInfo = realCart.paymentInfo;
+          req.session.cart.lineItems = realCart.lineItems;
+          req.session.cart.created = realCart.created;
+          req.session.cart.paid = realCart.paid;
 
           return req.session.cart;
 
@@ -110,10 +110,10 @@ router.use( '/', function( req, res, next ) {
       if ( cart.paymentInfo !== null ) {
 
         return createNewCart( req.session, req.user )
-        .then( function( cart ) {
+        .then( function( newCart ) {
 
           if ( authed ) {
-            req.user.cart = cart._id;
+            req.user.cart = newCart._id;
 
             return req.user.save();
           }

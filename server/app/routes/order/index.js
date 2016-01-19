@@ -3,6 +3,7 @@ module.exports = router;
 var mongoose = require('mongoose');
 
 var Order = mongoose.model( 'Order' );
+var User = mongoose.model( 'User' );
 
 var adminOnly = function( req, res, next ) {
 
