@@ -47,7 +47,7 @@ app.config( function ( $stateProvider ) {
         if ( result.error ) {
           $scope.error = result.error;
         } else {
-          $state.go('home');
+          $state.go('account.orderDetails', { orderId: result._id });
         }
 
       })

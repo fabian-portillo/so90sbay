@@ -1,0 +1,16 @@
+<div class="container">
+  <h2 class="text-center">My Account</h2>
+  <hr>
+
+  <div class="row">
+    <ul id="account-nav" class="col-sm-2 col-xs-12 nav nav-pills">
+      <li ng-repeat="option in navOptions" ui-sref-active="active">
+        <a ui-sref="account.{{ option.state }}">{{ option.name }}</a>
+      </li>
+    </ul>
+
+    <ui-view class="col-sm-10 col-xs-12">
+      <h3>Welcome, {{ user.email }}!</h3>
+    </ui-view>
+  </div>
+</div>
