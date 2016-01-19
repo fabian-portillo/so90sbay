@@ -21,7 +21,7 @@ app.config(function ($stateProvider) {
             $timeout(function() {
                 $scope.products = recProducts ? recProducts : allProducts;
             }, 1000);
-            $scope.slides = [{image: 'http://i.imgur.com/vSt2W4A.png', state:'categoryList ({ category: "toys" })'}, {image: 'http://i.imgur.com/xrw9b3t.png', state:'categoryList ({ category: "video games" })'}];
+            $scope.slides = [{title: 'Dope Toys', image: 'http://i.imgur.com/1SvIQ3z.png', state:'categoryList ({ category: "toys" })'}, {title: 'Video games', image: 'http://i.imgur.com/DFgIs9i.jpg', state:'categoryList ({ category: "video games" })'}, {title: 'Fresh CDs', image: 'http://i.imgur.com/CQSYCda.jpg', state:'categoryList ({ category: "music" })'}, {title: 'Beanie Babies', image: 'http://i.imgur.com/dcd6GJo.jpg', state:'categoryList ({ category: "beanie babies" })'}, {title: 'Furbymania', image: 'http://i.imgur.com/xrw9b3t.png', state:'categoryList ({ category: "toys" })'}];
         },
 
     });
