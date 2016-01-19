@@ -9,9 +9,17 @@ app.directive('sidebar', function (SidebarFactory) {
         { label: 'Toys', state: 'toys' },
         { label: 'Posters', state: 'posters' },
         { label: 'Video Games', state: 'video games' },
-        { label: 'Stuffed Animals', state: 'stuffed animals' },
+        { label: 'Beanie Babies', state: 'beanie babies' },
         { label: 'Clothing', state: 'clothing' },
-        { label: 'Music', state: 'music' }
+        { label: 'Music', state: 'music' },
+        { label: 'Action Figures', state: 'action figures' },
+        { label: 'Celebrity Playdates', state: 'celebrity playdate' },
+        { label: 'Magic Cards', state: 'magic the gathering cards' },
+        { label: 'Games', state: 'games' },
+        { label: 'Sega', state: 'sega' },
+        { label: 'Board Games', state: 'board games' },
+        { label: 'Pokemon Cards', state: 'pokemon' },
+        {label: 'Movies', state: 'vhs' }
       ];
 
       scope.sidebarState = SidebarFactory.getSidebarState;
