@@ -61,6 +61,16 @@ app.factory( 'UserFactory', function( $http, ProductFactory, $q ) {
 
   }
 
+  UserFactory.getOrders = function( id ) {
+
+    return $http.get('/api/user/' + id + '/orders')
+    .then( res => res.data )
+    .then( null, function(err) {
+      return { error: err };
+    });
+
+  } 
+
   return UserFactory;
 
 });
