@@ -735,7 +735,7 @@ var seedUsers = function () {
             description: 'For those who believe they can fly.',
             price: 5.00,
             quantity: 20,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/51WWA6FJ70L.jpg']
         },
         {
@@ -743,7 +743,7 @@ var seedUsers = function () {
             description: 'Your favorite dinosaur movie.',
             price: 5.00,
             quantity: 50,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/51WMY2JY7QL.jpg']
         },
         {
@@ -751,7 +751,7 @@ var seedUsers = function () {
             description: "Run Forrest, RUN!!",
             price: 5.00,
             quantity: 32,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/71QT0YBK9ZL.gif']
         },
         {
@@ -759,7 +759,7 @@ var seedUsers = function () {
             description: 'Relive the greatest romance from the 90s',
             price: 7.00,
             quantity: 15,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/71ZTV6TTC6L.gif']
         },
         {
@@ -767,7 +767,7 @@ var seedUsers = function () {
             description: 'Dinosaurs!!',
             price: 5.00,
             quantity: 10,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/71GXNSNZHCL.gif']
         },
         {
@@ -775,7 +775,7 @@ var seedUsers = function () {
             description: 'The first rule of Fight Club.',
             price: 5.00,
             quantity: 7,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/51RZTSSFMGL.jpg']
         },
         {
@@ -783,7 +783,7 @@ var seedUsers = function () {
             description: 'Necessary non-fiction',
             price: 5.00,
             quantity: 30,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/51GTF7T3ZPL.jpg']
         },
         {
@@ -791,7 +791,7 @@ var seedUsers = function () {
             description: 'Kilts.',
             price: 5.00,
             quantity: 40,
-            category: ['moves', 'vhs'],
+            category: ['movies', 'vhs'],
             photo: ['http://ecx.images-amazon.com/images/I/7169ZjzyfuL._SY550_.jpg']
         }
     ];
