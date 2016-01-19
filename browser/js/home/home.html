@@ -15,7 +15,7 @@
            <product-thumbnail product="product"></product-thumbnail>
         </div>
     </div>
-    <div class="recommended-products">    
+    <div class="recommended-products" ng-show="!!recentlyViewed">    
         <h3>Recently viewed</h3>
         <div class="row-fluid product-grid repeat-animation" ng-repeat="product in recentlyViewed">
            <product-thumbnail product="product"></product-thumbnail>

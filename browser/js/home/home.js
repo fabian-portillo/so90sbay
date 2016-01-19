@@ -16,7 +16,9 @@ app.config(function ($stateProvider) {
                 });
             },
             similarProducts: function (ProductFactory, recProducts) {
-                return ProductFactory.getMultipleCats(recProducts[recProducts.length - 1].category);
+                if (recProducts) {
+                    return ProductFactory.getMultipleCats(recProducts[recProducts.length - 1].category);
+                }
             }
         },
         controller: function ($scope, ProductFactory, allProducts, recProducts, $timeout, similarProducts) {
