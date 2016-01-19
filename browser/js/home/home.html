@@ -11,13 +11,7 @@
     <div class="recommended-products">
         <h3>Recommended Products:</h3>
         <div class="row-fluid product-grid repeat-animation" ng-repeat="product in products">
-            <div quicklook ng-mouseenter="options=true" ng-mouseleave="options=false" class="product-image-div quicklook-product">
-                <a ui-sref="productDetails({productId: product._id})">
-                <product-thumbnail product="product"></product-thumbnail>
-                </a>
-                <button ng-show="options" ng-controller="QuicklookModalCtrl" ng-click="open(product)" class="quicklook-button btn btn-lg btn-default">Quicklook</button>
-            </div>
+           <product-thumbnail product="product"></product-thumbnail>
         </div>
-
     </div>
 </section>
