@@ -12,12 +12,6 @@
 <br>
 <div id='catalog'>
     <div ng-repeat='product in products | orderBy:currentOrder' class="product-grid row-fluid repeat-animation">
-        <div class='items'>
-            <a ui-sref="productDetails({productId: product._id})">
-                <img src='{{product.photo[0]}}'>
-            </a>
-            <p><a ui-sref="productDetails({productId: product._id})">{{product.title}}</a></p>
-            <p class='price'> ${{ product.price}} </p>
-        </div>
+        <product-thumbnail product="product"></product-thumbnail>
     </div>
 </div>
