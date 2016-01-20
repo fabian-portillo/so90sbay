@@ -27,8 +27,10 @@ app.config( function ( $stateProvider ) {
   $scope.mainImage = $scope.product.photo[0];
 
   $scope.addToCart = function() {
-    Cart.add( 1, $scope.product._id );
-    $state.go('cart');
+    Cart.add( 1, $scope.product._id )
+    .then( function() {
+      $state.go( 'cart' );
+    });
   }
 
 
