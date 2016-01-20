@@ -804,13 +804,13 @@ var seedProducts = function () {
 var seedUsers = function () {
     var users = [ 
         {
-            email: coolio@aol.com,
-            password: coolio,
+            email: 'coolio@aol.com',
+            password: 'coolio',
             isAdmin: true
         },
         {
-            email: tupac@aol.com,
-            password: tupac,
+            email: 'tupac@aol.com',
+            password: 'tupac',
             isAdmin: true
         }
     ];
