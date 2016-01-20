@@ -8,8 +8,11 @@
       <th>Delete?</th>
     </tr>
     <tr ng-repeat="li in cart.lineItems">
-      <td>{{ li.quantity }}</td>
-      <td>{{ li.price }}</td>
+      <td><form class="form-inline form-group">
+        <input type="text" class="form-control" ng-model="li.quantity" required>
+        <button class="btn btn-primary" ng-click="editLine( li )">Save</button>
+      </form></td>
+      <td>${{ li.price * li.quantity | number: 2 }}</td>
       <td><img width="32px" ng-src="{{ li.product.photo[0] }}"> {{ li.product.title }}</td>
       <td><button class="btn btn-xs btn-danger" href="#" ng-click="deleteLine( li )">x</button></td>
     </tr>
