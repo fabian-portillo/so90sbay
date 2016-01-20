@@ -64,6 +64,7 @@ app.factory('ProductFactory', function ($http, $q) {
         })
     }
 
+
     factory.updateProduct = function(id, update) {
         return $http({
             method: 'PUT',
