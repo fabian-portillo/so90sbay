@@ -19,7 +19,7 @@ app.config( function ( $stateProvider ) {
 
   });
 
-}).controller( 'ProductDetailCtrl', function ( $scope, product, userId, reviews, Cart, ReviewFactory, ProductFactory, UserFactory, AuthService, $rootScope ) {
+}).controller( 'ProductDetailCtrl', function ( $scope, product, userId, reviews, Cart, ReviewFactory, ProductFactory, UserFactory, AuthService, $rootScope, $stateParams, $state ) {
 
   $scope.product = product;
   $scope.product.reviews = reviews;
@@ -28,7 +28,9 @@ app.config( function ( $stateProvider ) {
 
   $scope.addToCart = function() {
     Cart.add( 1, $scope.product._id );
+    $state.go('cart');
   }
+
 
   $scope.changeMainImage = function( image ) {
     $scope.mainImage = image;
