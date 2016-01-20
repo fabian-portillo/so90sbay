@@ -37,6 +37,7 @@ app.factory( 'UserFactory', function( $http, ProductFactory, $q ) {
         return cachedRecHistory;
       })
       .then(null, function (err) {
+        console.error(err);
         return null;
       })
   }
