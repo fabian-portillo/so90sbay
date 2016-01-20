@@ -3,6 +3,7 @@ $text-color: magenta;
 
 * {
   box-sizing: border-box;
+  font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 body {
@@ -25,6 +26,7 @@ body {
   min-height: 800px;
   h3 {
     padding: 20px 80px;
+    text-align: left;
   }
 }
 
