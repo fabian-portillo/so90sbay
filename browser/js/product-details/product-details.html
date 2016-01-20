@@ -9,9 +9,10 @@
         <div id="product-purchasebox">
             <p>
                 <small>{{ product.quantity }} available for </small>
-                <strong>${{ product.price }}</strong>
+                <strong>${{ product.price | number: 2 }}</strong>
             </p>
-            <button ng-click="addToCart()" class="btn btn-primary">Add to Cart</button>
+            <button ng-click="addToCart()" ng-show="product.quantity" class="btn btn-primary">Add to Cart</button>
+            <span ng-show="!product.quantity">Sorry, this product is out of stock.</span>
         </div>
         <div id="product-details">
             <h2>{{ product.title }}</h2>
@@ -29,7 +30,7 @@
             <h3 ng-show='!loggedIn'>Log in to write reviews of your favorite products!</h3>
         </div>
         <div class="review-list">
-            <review ng-repeat="review in product.reviews" review="review"></review>
+            <review ng-repeat="review in product.reviews.slice().reverse()" review="review"></review>
         </div>
         <hr class="clearfix">
     </div>

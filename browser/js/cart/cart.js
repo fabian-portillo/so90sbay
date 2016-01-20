@@ -7,7 +7,7 @@ app.config( function ( $stateProvider ) {
     controller: 'CartCtrl',
     resolve: {
       'cart' : function( Cart ) {
-        return Cart.fetch();
+        return Cart.fetch( true );
       }
     }
 
