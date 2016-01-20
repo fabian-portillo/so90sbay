@@ -5,14 +5,13 @@
   </div>
 </div>
 <hr>
-<table ng-show="!!orders.length">
+<table ng-show="!!orders.length && !orderDetails">
   <tr>
     <th>Order ID</th>
     <th>Associated User</th>
     <th>Completed?</th>
     <th>Number of Items</th>
-    <th>Shipping Address</th>
-    <th>Billing Address</th>
+    <th>Status</th>
   </tr>
   <tr ng-repeat="order in orders | filter:search">
     <td>{{ order._id }}</td>
@@ -20,6 +19,52 @@
     <td ng-show="!order.user">Guest</td>
     <td>{{ !!order.paymentInfo }}</td>
     <td>{{ order.lineItems.length }}</td>
+    <td>{{ order.paymentInfo ? order.paymentInfo.status : "Incomplete" }}</td>
+    <td><a href="#" ng-click="showDetails( order )">View Details</a></td>
+  </tr>
+</table>
+<table ng-show="orderDetails && order">
+  <tr>
+    <th>Order ID:</th>
+    <td>{{ order._id }}</td>
+    <th>Associated User:</th>
+    <td>{{ order.user ? order.user : "Guest" }}</td>
+  </tr>
+
+  <tr>
+    <th>Date Created:</th>
+    <td>{{ order.created }}</td>
+    <th>Date Paid:</th>
+    <td>{{ order.paid }}</td>
+  </tr>
+
+  <tr>
+    <th>Completed?</th>
+    <td>{{ !!order.paymentInfo }}</td>
+  </tr>
+
+  <tr>
+    <th>Shipping Address:</th>
+    <td colspan="3">{{ order.paymentInfo.shipAddress }} {{ order.paymentInfo.shipAddress2 }}, {{ order.paymentInfo.shipCity }}, {{ order.paymentInfo.shipState }} {{ order.paymentInfo.shipZip }}</td>
+  <tr>
+  
+  <tr>
+    <th>Phone Number:</th>
+    <td>{{ order.paymentInfo.shipPhone }}</td>
+    <th>Order Status:</th>
+    <td><select ng-model="order.paymentInfo.status">
+      <option>Incomplete</option>
+      <option>Pending</option>
+      <option>Shipped</option>
+      <option>Delivered</option>
+    </select></td>
+  </tr>
+
+  <tr>
+    <td colspan="4">
+      <button class="btn btn-primary" ng-click="saveDetails()">Save Changes</button>
+      <button class="btn btn-danger" ng-click="hideDetails()">Cancel</button>
+    </td>
   </tr>
 </table>
 <div ng-show="!orders.length">

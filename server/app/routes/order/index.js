@@ -127,6 +127,16 @@ router.post('/:id', function ( req, res, next ) {
 
 });
 
+router.put('/:id', adminOnly, function ( req, res, next ) {
+
+  Order.PaymentInfo.findByIdAndUpdate( req.order.paymentInfo._id, req.body.paymentInfo, { new: true } )
+  .then( function( newOrder ) {
+    res.status(200).json( newOrder );
+  })
+  .then( null, next );
+
+});
+
 router.delete('/:id', adminOnly, function ( req, res, next ) {
 
   req.order.remove()

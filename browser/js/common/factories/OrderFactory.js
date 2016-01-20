@@ -22,7 +22,19 @@ app.factory('OrderFactory', function ( $http ) {
     .then( function( res ) {
       return res.data;
     })
-    .then( null, console.log );
+    .then( null, console.error );
+
+  }
+
+  OrderFactory.update = function( id, data ) {
+
+    if ( data.paymentInfo._id ) delete data.paymentInfo._id;
+
+    return $http.put('/api/orders/' + id.toString(), data )
+    .then( function( res ) {
+      return res.data;
+    })
+    .then( null, console.error );
 
   }
 
