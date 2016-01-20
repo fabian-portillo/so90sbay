@@ -827,7 +827,7 @@ connectToDb.then(function () {
         }
     }).then(function () {
         console.log(chalk.green('Seed successful!'));
-        // process.kill(0);
+        process.kill(0);
     }).catch(function (err) {
         console.error(err);
         process.kill(1);
