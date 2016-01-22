@@ -1,0 +1,14 @@
+.repeat-animation.ng-enter {
+ /* -webkit-transition: 2s linear all;*/
+  transition: all 1s ease-in-out;
+  opacity:0;
+}
+
+.repeat-animation.ng-enter-stagger {
+  -webkit-transition-delay: .1s;
+  transition-delay: .1s;
+}
+.repeat-animation.ng-enter.ng-enter-active {
+  /* standard transition styles */
+  opacity:1;
+}

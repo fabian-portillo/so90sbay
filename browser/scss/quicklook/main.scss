@@ -1,0 +1,24 @@
+.quicklook-button {
+	position: absolute;
+	/*width: 100px;*/
+	bottom: 50px;
+	right: 92px;
+}
+
+.quicklook-product {
+	position: relative;
+}
+
+.quicklook-modal {
+	overflow: auto;
+	padding: 20px;
+	.product-modal-photo {
+		float: left;
+	}
+	.product-modal-details {
+		float: right;
+	}
+	h3 {
+		width: 225px;
+	}
+}

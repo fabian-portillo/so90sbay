@@ -1,0 +1,117 @@
+<div class="container">
+  <h2>Shopping Cart</h2>
+  <table style="width:100%" ng-show="cart.lineItems.length">
+    <tr>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Product</th>
+      <th>Delete?</th>
+    </tr>
+    <tr ng-repeat="li in cart.lineItems">
+      <td><form class="form-inline form-group">
+        <input type="text" class="form-control" ng-model="li.quantity" required>
+        <button class="btn btn-primary" ng-click="editLine( li )">Save</button>
+      </form></td>
+      <td>${{ li.price * li.quantity | number: 2 }}</td>
+      <td><img width="32px" ng-src="{{ li.product.photo[0] }}"> {{ li.product.title }}</td>
+      <td><button class="btn btn-xs btn-danger" href="#" ng-click="deleteLine( li )">x</button></td>
+    </tr>
+  </table>
+  <div ng-show="!cart.lineItems.length" class="alert alert-warning fullwidth">
+      Your shopping cart is empty! Why don't you <a ui-sref="productList">shop for something</a>?
+  </div>
+  <div class="container row" ng-show="cart.lineItems.length && !showCheckout">
+    <button class="checkout-btn btn btn-primary" ng-click="openCheckout()">Checkout</button>
+  </div>
+  <div class="container" ng-show="showCheckout">
+    <form class="checkout-form" name="checkoutForm">
+      <h3>Checkout</h3>
+      <div class="alert alert-danger" ng-show="error" role="alert">
+        {{ error }}
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-line-1">Street Address*</label>
+        </div>
+        <div class="col-xs-5 control-group">
+          <input type="text" class="form-control" name="address-line-1" ng-model="checkout.shipAddress" required>
+        </div>
+
+        <div class="col-xs-1">
+          <label for="credit-card-num">CC Num*</label>
+        </div>
+        <div class="col-xs-4">
+          <input type="text" class="form-control" name="credit-card-num" ng-model="checkout.creditCardNum" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-line-2">Address 2</label>
+        </div>
+        <div class="col-xs-5 control-group">
+          <input type="text" class="form-control" name="address-line-2" ng-model="checkout.shipAddress2">
+        </div>
+
+        <div class="col-xs-1">
+          <label for="credit-card-exp">Expires*</label>
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control" name="credit-card-exp" ng-model="checkout.creditCardExpiration" required>
+        </div>
+        <div class="col-xs-1">
+          <label for="credit-card-sec">Sec Num*</label>
+        </div>
+        <div class="col-xs-1">
+          <input type="text" class="form-control" name="credit-card-sec" ng-model="checkout.creditCardSecNum" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-city">City*</label>
+        </div>
+        <div class="col-xs-5 control-group">
+          <input type="text" class="form-control" name="address-city" ng-model="checkout.shipCity" required>
+        </div>
+
+        <div class="col-xs-1">
+          <label for="credit-card-name">Name*</label>
+        </div>
+        <div class="col-xs-4">
+          <input type="text" class="form-control" name="credit-card-name" ng-model="checkout.creditCardName" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-state">State*</label>
+        </div>
+        <div class="col-xs-1">
+          <input type="text" class="form-control" name="address-state" ng-model="checkout.shipState" required>
+        </div>
+
+        <div class="col-xs-1">
+          <label for="address-zip">Zip Code*</label>
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control" name="address-zip" ng-model="checkout.shipZip" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <label for="address-phone">Phone Number*</label>
+        </div>
+        <div class="col-xs-5">
+          <input type="text" class="form-control" name="address-phone" ng-model="checkout.shipPhone" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <button type="submit" class="btn btn-primary" ng-click="finishCheckout( checkout )">Checkout</button>
+      </div>
+    </form>
+  </div>
+</div>

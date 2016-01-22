@@ -1,0 +1,32 @@
+<form name="newReviewForm" novalidate ng-submit='newReviewForm.$valid && addReview()'>
+	<div class='rate' name='rating' ng-model='newReview.rating' required>
+		<button ng-click='setRating(1)' ng-class='{"starred": stars.one <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(2)' ng-class='{"starred": stars.two <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(3)' ng-class='{"starred": stars.three <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(4)' ng-class='{"starred": stars.four <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<button ng-click='setRating(5)' ng-class='{"starred": stars.five <= newReview.rating}'>
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</button>
+		<error ng-show="newReviewForm.rating.$error.required && newReviewForm.$submitted">Rating is required.</error>
+	</div>
+	<div class='form-group'>
+		<label for='title'>Title:</label>
+		<input type='text' name='title' class='form-control input-sm' ng-model="newReview.title" required>
+		<error ng-show="newReviewForm.title.$error.required && newReviewForm.title.$touched">Title is required.</error>
+		<label for='description'>Description:</label>
+		<textarea name='description' class='form-control' ng-model="newReview.body" required></textarea>
+		<error ng-show="newReviewForm.description.$error.required && newReviewForm.description.$touched">Description is required.</error>
+		<input type='submit' id='click'>
+		<button type='button' ng-click='hideForm()' id='remove'>
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+	</div>
+</form>
