@@ -1,9 +1,0 @@
-<div id="sidebar" ng-show="sidebarState()">
-  <h2>Categories</h2>
-  <hr>
-    <ul>
-      <li ng-repeat="category in categories">
-        <a ui-sref="categoryList ({ category: category.state })" ng-click="toggleCategories()">{{ category.label }} <span class="glyphicon glyphicon-circle-arrow-right"></span></a>
-      </li>
-    </ul>
-</div>

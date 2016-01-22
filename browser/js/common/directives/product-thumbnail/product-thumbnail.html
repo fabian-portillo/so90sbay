@@ -1,6 +1,0 @@
-<div ng-mouseenter="options=true" ng-mouseleave="options=false" class="product-image-div quicklook-product">
-    <a ui-sref="productDetails({productId: product._id})">
-        <img class="product-thumbnail" src="{{product.photo[0]}}" alt="">
-    </a>
-    <button ng-show="options" ng-controller="QuicklookModalCtrl" ng-click="open(product)" class="quicklook-button btn btn-lg btn-default">Quicklook</button>
-</div>
